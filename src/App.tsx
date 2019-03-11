@@ -16,9 +16,9 @@ import { Provider } from "react-redux";
 import ReduxThunk from "redux-thunk";
 // Redux
 // import locationReducer from "./src/redux/Location/reducer";
-import "./ReactotronConfig";
+import "../ReactotronConfig";
 // Utilities
-import { isLoggedIn } from "./src/utils/authUtils";
+import { isLoggedIn } from "./utils/authUtils";
 // import createRootNavigator from "./routes";
 
 interface Props {}
