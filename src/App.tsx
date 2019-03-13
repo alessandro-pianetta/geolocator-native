@@ -15,24 +15,41 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import ReduxThunk from "redux-thunk";
 // Redux
-// import locationReducer from "./src/redux/Location/reducer";
+import locationReducer from "./redux/Location/reducer";
 import "../ReactotronConfig";
 // Utilities
 import { isLoggedIn } from "./utils/authUtils";
-// import createRootNavigator from "./routes";
+import createRootNavigator from "../routes";
+
+const store = createStore(locationReducer, {}, applyMiddleware(ReduxThunk));
 
 interface Props {}
 export default class App extends Component<Props> {
+  state = {
+    loggedIn: false,
+    checkedLogin: false
+  };
+
+  async componentDidMount() {
+    const loggedIn = await isLoggedIn();
+    this.setState({ loggedIn, checkedLogin: true });
+  }
+
+  renderAppContainer() {
+    const { loggedIn, checkedLogin } = this.state;
+    if (!checkedLogin) {
+      return null;
+    }
+    const AppContainer = createRootNavigator(loggedIn);
+
+    return <AppContainer />;
+  }
+
   render() {
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "#F5FCFF"
-        }}
-      />
+      <Provider store={store}>
+        <View style={{ flex: 1 }}>{this.renderAppContainer()}</View>
+      </Provider>
     );
   }
 }
