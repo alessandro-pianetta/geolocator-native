@@ -9,47 +9,46 @@
  */
 
 // @flow
-import React, { Component } from "react";
-import { View } from "react-native";
-import { createStore, combineReducers, applyMiddleware } from "redux";
-import { Provider } from "react-redux";
-import ReduxThunk from "redux-thunk";
+import React, { Component } from 'react';
+import { View } from 'react-native';
+import { Provider } from 'react-redux';
+import { applyMiddleware, combineReducers, createStore } from 'redux';
+import ReduxThunk from 'redux-thunk';
+import '../ReactotronConfig';
+import createRootNavigator from '../routes';
 // Redux
-import locationReducer from "./redux/Location/reducer";
-import "../ReactotronConfig";
+import locationReducer from './redux/Location/reducer';
 // Utilities
-import { isLoggedIn } from "./utils/authUtils";
-import createRootNavigator from "../routes";
+import { isLoggedIn } from './utils/authUtils';
 
 const store = createStore(locationReducer, {}, applyMiddleware(ReduxThunk));
 
-interface Props {}
-export default class App extends Component<Props> {
-  state = {
-    loggedIn: false,
-    checkedLogin: false
-  };
+export default class App extends Component {
+	state = {
+		checkedLogin: false,
+		loggedIn: false,
+	};
 
-  async componentDidMount() {
-    const loggedIn = await isLoggedIn();
-    this.setState({ loggedIn, checkedLogin: true });
-  }
+	async componentDidMount() {
+		const loggedIn = await isLoggedIn();
+		this.setState({ loggedIn, checkedLogin: true });
+	}
 
-  renderAppContainer() {
-    const { loggedIn, checkedLogin } = this.state;
-    if (!checkedLogin) {
-      return null;
-    }
-    const AppContainer = createRootNavigator(loggedIn);
+	renderAppContainer() {
+		const { loggedIn, checkedLogin } = this.state;
+		if (!checkedLogin) {
+			return null;
+		}
+		const AppContainer = createRootNavigator(loggedIn);
 
-    return <AppContainer />;
-  }
+		return <AppContainer />;
+	}
 
-  render() {
-    return (
-      <Provider store={store}>
-        <View style={{ flex: 1 }}>{this.renderAppContainer()}</View>
-      </Provider>
-    );
-  }
+	render() {
+		return (
+			<Provider store={store}>
+				<View style={{ flex: 1 }}>{this.renderAppContainer()}</View>
+			</Provider>
+		);
+	}
 }

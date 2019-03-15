@@ -1,0 +1,4 @@
+const MAPS_API_KEY = 'API_KEY';
+const PLACES_API_KEY = 'API_KEY';
+
+export { MAPS_API_KEY, PLACES_API_KEY };

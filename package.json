@@ -19,6 +19,7 @@
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "rm": "^0.1.8",
+    "twilio": "^3.29.1",
     "validate.js": "^0.12.0"
   },
   "devDependencies": {
@@ -35,6 +36,10 @@
     "react-test-renderer": "16.6.3",
     "reactotron-react-native": "^3.2.1",
     "ts-jest": "^24.0.0",
+    "tslint": "^5.14.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-config-standard": "^8.0.1",
+    "tslint-react": "^3.6.0",
     "typescript": "^3.3.3333"
   },
   "jest": {
