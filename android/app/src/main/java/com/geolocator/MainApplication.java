@@ -6,6 +6,7 @@ import com.facebook.react.ReactApplication;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.auth.RNFirebaseAuthPackage;
 import io.invertase.firebase.firestore.RNFirebaseFirestorePackage;
+import io.invertase.firebase.functions.RNFirebaseFunctionsPackage;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
@@ -29,7 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(new MainReactPackage(),
-            new RNFirebasePackage(), new RNFirebaseAuthPackage(), new RNFirebaseFirestorePackage(), new RNGestureHandlerPackage());
+            new RNFirebasePackage(), new RNFirebaseAuthPackage(), new RNFirebaseFirestorePackage(), new RNFirebaseFunctionsPackage(), new RNGestureHandlerPackage());
     }
 
     @Override
