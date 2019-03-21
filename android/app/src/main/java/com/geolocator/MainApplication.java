@@ -3,6 +3,7 @@ package com.geolocator;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import io.invertase.firebase.RNFirebasePackage;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
@@ -25,7 +26,8 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(new MainReactPackage(), new RNGestureHandlerPackage());
+      return Arrays.<ReactPackage>asList(new MainReactPackage(),
+            new RNFirebasePackage(), new RNGestureHandlerPackage());
     }
 
     @Override
