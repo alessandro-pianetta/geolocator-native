@@ -9,6 +9,7 @@ target 'geolocator' do
     pod 'Firebase/Core', '~> 5.15.0'
     pod 'Firebase/Auth', '~> 5.15.0'
     pod 'Firebase/Firestore', '~> 5.15.0'
+    pod 'Firebase/Functions', '~> 5.15.0'
 
   target 'geolocatorTests' do
     inherit! :search_paths
