@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { AsyncStorage, Text, TouchableOpacity, View } from 'react-native';
+import firebase from 'react-native-firebase';
 import Form from '../../components/Form/Form';
-// import firebase from "react-native-firebase";
 import validate from '../../utils/formUtils';
 
 interface Input {
@@ -108,39 +108,45 @@ class LoginPage extends PureComponent<Props, State> {
 		});
 	}
 
-	// createUser = (email, password) => {
-	//   firebase
-	//     .auth()
-	//     .createUserAndRetrieveDataWithEmailAndPassword(email, password)
-	//     .then(credential => {
-	//       if (credential) {
-	//         console.log("default app user ->", credential.user.toJSON());
-	//         const { uid } = credential.user.toJSON();
-	//         AsyncStorage.setItem("uid", uid);
-	//         this.props.navigation.navigate("LoggedIn");
-	//       }
-	//     })
-	//     .catch(err => {
-	//       console.log(err);
-	//     });
-	// };
+	createUser = (email: string, password: string) => {
+		firebase
+			.auth()
+			.createUserAndRetrieveDataWithEmailAndPassword(email, password)
+			.then(credential => {
+				if (credential) {
+					console.log(
+						'default app user ->',
+						credential.user.toJSON(),
+					);
+					const { uid } = credential.user.toJSON();
+					AsyncStorage.setItem('uid', uid);
+					this.props.navigation.navigate('LoggedIn');
+				}
+			})
+			.catch(err => {
+				console.log(err);
+			});
+	}
 
-	// signInUser = (email, password) => {
-	//   firebase
-	//     .auth()
-	//     .signInAndRetrieveDataWithEmailAndPassword(email, password)
-	//     .then(credential => {
-	//       if (credential) {
-	//         console.log("default app user ->", credential.user.toJSON());
-	//         const { uid } = credential.user.toJSON();
-	//         AsyncStorage.setItem("uid", uid);
-	//         this.props.navigation.navigate("LoggedIn");
-	//       }
-	//     })
-	//     .catch(err => {
-	//       console.log(err);
-	//     });
-	// };
+	signInUser = (email: string, password: string) => {
+		firebase
+			.auth()
+			.signInAndRetrieveDataWithEmailAndPassword(email, password)
+			.then(credential => {
+				if (credential) {
+					console.log(
+						'default app user ->',
+						credential.user.toJSON(),
+					);
+					const { uid } = credential.user.toJSON();
+					AsyncStorage.setItem('uid', uid);
+					this.props.navigation.navigate('LoggedIn');
+				}
+			})
+			.catch(err => {
+				console.log(err);
+			});
+	}
 
 	render() {
 		const { validated, username, password } = this.state;
