@@ -1,6 +1,6 @@
 import React from 'react';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { PLACES_API_KEY } from '../../../consts/api';
+import { MAPS_API_KEY } from '../../../consts/api';
 import styles from './styles';
 
 interface Props {
@@ -18,7 +18,7 @@ const GooglePlaces = (props: Props) => (
 		onPress={(data: any) => props.onPress(data.description)}
 		getDefaultValue={() => ''}
 		query={{
-			key: PLACES_API_KEY,
+			key: MAPS_API_KEY,
 			language: 'en',
 		}}
 		styles={styles}

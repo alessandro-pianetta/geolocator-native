@@ -135,6 +135,10 @@ android {
 }
 
 dependencies {
+    implementation(project(':react-native-maps')){
+        exclude group: 'com.google.android.gms', module: 'play-services-base'
+        exclude group: 'com.google.android.gms', module: 'play-services-maps'
+    }
     implementation project(':react-native-firebase')
     implementation project(':react-native-gesture-handler')
     implementation fileTree(dir: "libs", include: ["*.jar"])
@@ -142,6 +146,7 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
     // Firebase dependencies
     implementation "com.google.android.gms:play-services-base:16.0.1"
+    implementation 'com.google.android.gms:play-services-maps:16.1.0'
     implementation "com.google.firebase:firebase-core:16.0.6"
     implementation "com.google.firebase:firebase-auth:16.1.0"
     implementation "com.google.firebase:firebase-firestore:17.1.5"

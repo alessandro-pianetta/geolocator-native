@@ -8,6 +8,7 @@
 #import "AppDelegate.h"
 
 #import <Firebase.h>
+#import <GoogleMaps/GoogleMaps.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
@@ -16,6 +17,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   [FIRApp configure];
+  [GMSServices provideAPIKey:@"AIzaSyCVCuX4eD4el0dZusPk7spf2MKD0C2vf3U"];
   NSURL *jsCodeLocation;
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
