@@ -24,7 +24,7 @@ interface Props {
 	placeholder: string;
 	onChangeText(event: any): void;
 	isSegmented?: boolean;
-	style: Style;
+	style?: Style;
 	autoCorrect?: boolean;
 	keyboardType?: string;
 	multiline?: boolean;

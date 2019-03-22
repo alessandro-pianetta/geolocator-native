@@ -1,3 +1,4 @@
+import { Button } from 'prefab-components';
 import React, { PureComponent } from 'react';
 import { AsyncStorage, Text, TouchableOpacity, View } from 'react-native';
 import firebase from 'react-native-firebase';
@@ -79,28 +80,6 @@ class LoginPage extends PureComponent<Props, State> {
 		},
 	};
 
-	loginForm: any = [
-		{
-			labelText: 'Username',
-			onChangeText: (input: string) =>
-				this.setState({
-					username: input,
-				}),
-			placeholder: 'user@name.com',
-			value: this.state.username,
-		},
-		{
-			labelText: 'Password',
-			onChangeText: (input: string) =>
-				this.setState({
-					password: input,
-				}),
-			placeholder: '********',
-			secureTextEntry: true,
-			value: this.state.password,
-		},
-	];
-
 	componentDidUpdate = () => {
 		const { username, password } = this.state;
 		this.setState({
@@ -111,14 +90,14 @@ class LoginPage extends PureComponent<Props, State> {
 	createUser = (email: string, password: string) => {
 		firebase
 			.auth()
-			.createUserAndRetrieveDataWithEmailAndPassword(email, password)
-			.then(credential => {
+			.createUserWithEmailAndPassword(email, password)
+			.then((credential: any) => {
 				if (credential) {
 					console.log(
 						'default app user ->',
 						credential.user.toJSON(),
 					);
-					const { uid } = credential.user.toJSON();
+					const { uid }: { uid: string } = credential.user.toJSON();
 					AsyncStorage.setItem('uid', uid);
 					this.props.navigation.navigate('LoggedIn');
 				}
@@ -131,14 +110,15 @@ class LoginPage extends PureComponent<Props, State> {
 	signInUser = (email: string, password: string) => {
 		firebase
 			.auth()
-			.signInAndRetrieveDataWithEmailAndPassword(email, password)
-			.then(credential => {
+			.signInWithEmailAndPassword(email, password)
+			.then((credential: any) => {
 				if (credential) {
 					console.log(
 						'default app user ->',
 						credential.user.toJSON(),
 					);
-					const { uid } = credential.user.toJSON();
+					const { uid }: { uid: string } = credential.user.toJSON();
+					console.log('uid', uid);
 					AsyncStorage.setItem('uid', uid);
 					this.props.navigation.navigate('LoggedIn');
 				}
@@ -158,34 +138,54 @@ class LoginPage extends PureComponent<Props, State> {
 			},
 		} = this.props;
 
+		const loginForm: any = [
+			{
+				labelText: 'Username',
+				onChangeText: (input: string) => {
+					this.setState({
+						username: input,
+					});
+				},
+				placeholder: 'user@name.com',
+				value: this.state.username,
+			},
+			{
+				labelText: 'Password',
+				onChangeText: (input: string) => {
+					this.setState({
+						password: input,
+					});
+				},
+				placeholder: '********',
+				secureTextEntry: true,
+				value: this.state.password,
+			},
+		];
+
 		return (
 			<View style={{ flex: 1, marginVertical: 35 }}>
-				<Form form={this.loginForm} validations={this.constraints} />
-				{
-					//   signUp ? (
-					//   <Button
-					//     full
-					//     bordered={!validated}
-					//     success
-					//     onPress={() => {
-					//       // this.createUser(username, password);
-					//     }}
-					//   >
-					//     <Text>Sign Up</Text>
-					//   </Button>
-					// ) : (
-					//   <Button
-					//     full
-					//     bordered={!validated}
-					//     primary
-					//     onPress={() => {
-					//       // this.signInUser(username, password);
-					//     }}
-					//   >
-					//     <Text>Log In</Text>
-					//   </Button>
-					// )
-				}
+				<Form form={loginForm} validations={this.constraints} />
+				{signUp ? (
+					<Button
+						full={true}
+						bordered={!validated}
+						success={true}
+						onPress={() => {
+							this.createUser(username, password);
+						}}
+						text='Sign Up'
+					/>
+				) : (
+					<Button
+						full={true}
+						bordered={!validated}
+						primary={true}
+						onPress={() => {
+							this.signInUser(username, password);
+						}}
+						text='Log In'
+					/>
+				)}
 			</View>
 		);
 	}

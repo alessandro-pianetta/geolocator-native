@@ -11,6 +11,7 @@
     "axios": "^0.18.0",
     "firebase-admin": "^7.0.0",
     "firebase-functions": "^2.2.0",
+    "prefab-components": "https://github.com/alessandro-pianetta/prefab-components.git",
     "react": "16.6.3",
     "react-native": "0.58.6",
     "react-native-firebase": "^5.2.3",
