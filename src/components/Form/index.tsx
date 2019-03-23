@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
-import { Dimensions, SegmentedControlIOS, View } from 'react-native';
+import { Dimensions, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import styles from './styles';
 
+import { Button } from 'prefab-components';
+import FormArray from '../../components/Form/Form';
 import {
 	addCallToHistory,
 	convertRadius,
 	formatAddress,
 } from '../../redux/Location/actions';
-import Button from '../global/Button';
+
 import GooglePlaces from '../global/GooglePlaces';
-import Input from '../global/Input';
 
 interface Props {
 	style: any;
@@ -21,7 +22,6 @@ interface Props {
 	secureTextEntry?: boolean;
 	autoCapitalize?: string;
 	onChangeText(event: any): void;
-	isSegmented?: boolean;
 	autoCorrect?: boolean;
 	keyboardType?: string;
 	multiline?: boolean;
@@ -36,7 +36,6 @@ interface State {
 	phone: string;
 	radius: string;
 	recipient: string;
-	selectedIndex: 0;
 	sender: string;
 }
 
@@ -50,7 +49,6 @@ class Form extends Component<Props, State> {
 			phone: '',
 			radius: '',
 			recipient: '',
-			selectedIndex: 0,
 			sender: '',
 		};
 	}
@@ -67,7 +65,38 @@ class Form extends Component<Props, State> {
 
 	render() {
 		const { height, width } = Dimensions.get('window');
-		const { phone, selectedIndex, radius, message } = this.state;
+		const { phone, radius, message } = this.state;
+
+		const mapForm = [
+			{
+				keyboardType: 'phone-pad',
+				labelText: "Friend's phone number",
+				onChangeText: (phone: string) => {
+					this.setState({ phone });
+				},
+				placeholder: '(123) 456-7890',
+				value: phone,
+			},
+			{
+				keyboardType: 'numeric',
+				labelText: `Distance in ${
+					false ? 'km' : 'miles'
+				} to send alert`,
+				onChangeText: (radius: string) => this.setState({ radius }),
+				placeholder: '2',
+				value: radius,
+			},
+			{
+				labelText: 'Custom message',
+				multiline: true,
+				numberOfLines: 4,
+				onChangeText: (message: string) => {
+					this.setState({ message });
+				},
+				placeholder: 'Enter custom message here',
+				value: message,
+			},
+		];
 
 		return (
 			<View style={styles.container}>
@@ -75,68 +104,24 @@ class Form extends Component<Props, State> {
 					onPress={(address: string) => this.setState({ address })}
 				/>
 				<View style={styles.inputContainer}>
-					<Input
-						labelText="Friend's phone number"
-						onChangeText={(phone: string) =>
-							this.setState({ phone })
-						}
-						value={phone}
-						placeholder={'(123) 456-7890'}
-						keyboardType={'phone-pad'}
-					/>
 					<View
 						style={{
 							alignItems: 'center',
 							flexDirection: 'row',
 							justifyContent: 'space-around',
 							marginBottom: 20,
-							paddingHorizontal: width * 0.05,
 							width,
 						}}
 					>
-						<Input
-							labelText={`Distance in ${
-								selectedIndex ? 'kilometers' : 'miles'
-							} to send alert`}
-							onChangeText={(radius: string) =>
-								this.setState({ radius })
-							}
-							value={radius}
-							placeholder={'2'}
-							keyboardType={'numeric'}
-							style={{
-								containerStyle: { marginBottom: 0, flex: 1 },
-							}}
-						/>
-						<SegmentedControlIOS
-							style={{
-								height: 20,
-								marginLeft: '5%',
-								marginTop: 20,
-								width: 80,
-							}}
-							values={['mi', 'km']}
-							selectedIndex={selectedIndex}
-							onChange={(event: any) => {
-								this.setState({
-									selectedIndex:
-										event.nativeEvent.selectedSegmentIndex,
-								});
-							}}
-						/>
+						<FormArray form={mapForm} />
 					</View>
-					<Input
-						labelText='Custom message'
-						onChangeText={(message: string) =>
-							this.setState({ message })
-						}
-						value={message}
-						placeholder={'Enter custom message here'}
-						multiline={true}
-						numberOfLines={4}
-					/>
 
-					<Button onPress={() => this.handleSubmit()} />
+					<Button
+						onPress={this.handleSubmit}
+						danger={true}
+						full={true}
+						text='Submit'
+					/>
 				</View>
 			</View>
 		);

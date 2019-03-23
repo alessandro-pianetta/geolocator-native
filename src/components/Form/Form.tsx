@@ -12,7 +12,6 @@ interface Input {
 	autoCapitalize?: string;
 	placeholder: string;
 	onChangeText(event: any): void;
-	isSegmented?: boolean;
 	style: any;
 	autoCorrect?: boolean;
 	keyboardType?: string;
@@ -36,6 +35,7 @@ const Form = ({ form }: Form) => (
 				placeholder={input.placeholder}
 				autoCapitalize={input.autoCapitalize || 'none'}
 				secureTextEntry={input.secureTextEntry}
+				keyboardType={input.keyboardType}
 			/>
 		))}
 	</View>

@@ -12,7 +12,6 @@ interface Input {
 	autoCapitalize?: string;
 	placeholder: string;
 	onChangeText(event: any): void;
-	isSegmented?: boolean;
 	style: any;
 	autoCorrect?: boolean;
 	keyboardType?: string;
