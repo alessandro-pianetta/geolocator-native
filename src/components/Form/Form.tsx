@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { Dimensions, View } from 'react-native';
 
 import styles from './styles';
 
@@ -24,21 +24,23 @@ interface Form {
 	validations: any;
 }
 
-const Form = ({ form }: Form) => (
-	<View style={styles.container}>
-		{form.map((input: Input) => (
-			<Input
-				key={`input-${input.labelText}`}
-				labelText={input.labelText}
-				onChangeText={input.onChangeText}
-				value={input.value}
-				placeholder={input.placeholder}
-				autoCapitalize={input.autoCapitalize || 'none'}
-				secureTextEntry={input.secureTextEntry}
-				keyboardType={input.keyboardType}
-			/>
-		))}
-	</View>
-);
+const Form = ({ form }: Form) => {
+	return (
+		<View style={styles.inputContainer}>
+			{form.map((input: Input) => (
+				<Input
+					key={`input-${input.labelText}`}
+					labelText={input.labelText}
+					onChangeText={input.onChangeText}
+					value={input.value}
+					placeholder={input.placeholder}
+					autoCapitalize={input.autoCapitalize || 'none'}
+					secureTextEntry={input.secureTextEntry}
+					keyboardType={input.keyboardType}
+				/>
+			))}
+		</View>
+	);
+};
 
 export default Form;

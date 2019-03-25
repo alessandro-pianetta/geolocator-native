@@ -65,12 +65,21 @@ class Form extends Component<Props, State> {
 
 	render() {
 		const { height, width } = Dimensions.get('window');
-		const { phone, radius, message } = this.state;
+		const { recipient, phone, radius, message } = this.state;
 
 		const mapForm = [
 			{
+				labelText: 'Name',
+				onChangeText: (recipient: string) => {
+					this.setState({ recipient });
+				},
+				placeholder: 'Alex',
+				value: recipient,
+			},
+
+			{
 				keyboardType: 'phone-pad',
-				labelText: "Friend's phone number",
+				labelText: 'Phone number',
 				onChangeText: (phone: string) => {
 					this.setState({ phone });
 				},
@@ -103,26 +112,13 @@ class Form extends Component<Props, State> {
 				<GooglePlaces
 					onPress={(address: string) => this.setState({ address })}
 				/>
-				<View style={styles.inputContainer}>
-					<View
-						style={{
-							alignItems: 'center',
-							flexDirection: 'row',
-							justifyContent: 'space-around',
-							marginBottom: 20,
-							width,
-						}}
-					>
-						<FormArray form={mapForm} />
-					</View>
-
-					<Button
-						onPress={this.handleSubmit}
-						danger={true}
-						full={true}
-						text='Submit'
-					/>
-				</View>
+				<FormArray form={mapForm} />
+				<Button
+					onPress={this.handleSubmit}
+					danger={true}
+					full={true}
+					text='Submit'
+				/>
 			</View>
 		);
 	}
