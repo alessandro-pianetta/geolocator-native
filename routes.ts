@@ -5,12 +5,21 @@ import {
 	createSwitchNavigator,
 } from 'react-navigation';
 // Components
+import HistoryPage from './src/pages/history';
 import LoginPage from './src/pages/login';
 import MapPage from './src/pages/map';
+import SettingsPage from './src/pages/settings';
 
 const LoggedInStack = createBottomTabNavigator({
 	Map: {
 		screen: MapPage,
+	},
+	// tslint:disable-next-line: object-literal-sort-keys
+	History: {
+		screen: HistoryPage,
+	},
+	Settings: {
+		screen: SettingsPage,
 	},
 });
 

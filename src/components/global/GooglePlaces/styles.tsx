@@ -13,15 +13,14 @@ const styles = StyleSheet.create({
 	},
 	listView: {
 		backgroundColor: 'white',
-		borderRadius: 5,
 		elevation: 3,
 		flex: 1,
-		// left: 10,
 		position: 'absolute',
-		// right: 10,
 		top: 50,
 		width: '100%',
 		zIndex: 10,
+		borderBottomWidth: 2,
+		borderColor: 'black',
 	},
 	predefinedPlacesDescription: {
 		color: '#1faadb',

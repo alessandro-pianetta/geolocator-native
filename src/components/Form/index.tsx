@@ -112,6 +112,7 @@ class Form extends Component<Props, State> {
 				<GooglePlaces
 					onPress={(address: string) => this.setState({ address })}
 				/>
+				<View style={styles.border} />
 				<FormArray form={mapForm} />
 				<Button
 					onPress={this.handleSubmit}
