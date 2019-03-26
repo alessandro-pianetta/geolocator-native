@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Dimensions, View } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -39,7 +39,7 @@ interface State {
 	sender: string;
 }
 
-class Form extends Component<Props, State> {
+class Form extends PureComponent<Props, State> {
 	constructor(props: Props) {
 		super(props);
 		this.state = {
