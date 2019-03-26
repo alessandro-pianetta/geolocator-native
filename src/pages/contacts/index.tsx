@@ -7,7 +7,7 @@ interface Props {}
 
 interface State {}
 
-class HistoryPage extends PureComponent<Props, State> {
+class ContactsPage extends PureComponent<Props, State> {
 	componentWillMount() {}
 
 	render() {
@@ -49,4 +49,4 @@ const mapStateToProps = (state: any) => ({});
 export default connect(
 	mapStateToProps,
 	null,
-)(HistoryPage);
+)(ContactsPage);

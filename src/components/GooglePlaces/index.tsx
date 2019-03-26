@@ -1,6 +1,6 @@
 import React from 'react';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { MAPS_API_KEY } from '../../../consts/api';
+import { MAPS_API_KEY } from '../../consts/api';
 import styles from './styles';
 
 interface Props {

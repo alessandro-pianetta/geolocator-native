@@ -12,7 +12,7 @@ import {
 	formatAddress,
 } from '../../redux/Location/actions';
 
-import GooglePlaces from '../global/GooglePlaces';
+import GooglePlaces from '../GooglePlaces';
 
 interface Props {
 	style: any;
