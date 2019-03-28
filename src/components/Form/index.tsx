@@ -11,6 +11,7 @@ import {
 	convertRadius,
 	formatAddress,
 } from '../../redux/Location/actions';
+import Border from '../global/Border';
 
 import GooglePlaces from '../GooglePlaces';
 
@@ -112,7 +113,7 @@ class Form extends PureComponent<Props, State> {
 				<GooglePlaces
 					onPress={(address: string) => this.setState({ address })}
 				/>
-				<View style={styles.border} />
+				<Border />
 				<FormArray form={mapForm} />
 				<Button
 					onPress={this.handleSubmit}
