@@ -12,7 +12,7 @@ interface Input {
 	autoCapitalize?: string;
 	placeholder: string;
 	onChangeText(event: any): void;
-	style: any;
+	onValueChange(event: any): void;
 	autoCorrect?: boolean;
 	keyboardType?: string;
 	multiline?: boolean;
@@ -28,16 +28,7 @@ const Form = ({ form }: Form) => {
 	return (
 		<View style={styles.inputContainer}>
 			{form.map((input: Input) => (
-				<Input
-					key={`input-${input.labelText}`}
-					labelText={input.labelText}
-					onChangeText={input.onChangeText}
-					value={input.value}
-					placeholder={input.placeholder}
-					autoCapitalize={input.autoCapitalize || 'none'}
-					secureTextEntry={input.secureTextEntry}
-					keyboardType={input.keyboardType}
-				/>
+				<Input key={`input-${input.labelText}`} {...input} />
 			))}
 		</View>
 	);

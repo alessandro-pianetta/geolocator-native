@@ -28,6 +28,7 @@
 		"jsx-no-bind": true,
 		"jsx-no-lambda": false,
 		"interface-name": [true, "never-prefix"],
-		"no-shadowed-variable": false
+		"no-shadowed-variable": false,
+		"object-literal-sort-keys": false
 	}
 }

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import {
 	Dimensions,
+	Switch,
 	Text,
 	TextInput,
 	TextStyle,
@@ -9,59 +10,63 @@ import {
 } from 'react-native';
 import styles from './styles';
 
-interface Style {
-	containerStyle: ViewStyle;
-	labelStyle: TextStyle;
-	inputStyle: TextStyle;
-}
-
 interface Props {
 	labelText: string;
-	value: string;
+	value: string | boolean;
 	secureTextEntry?: boolean;
 	autoCapitalize?: string;
 	placeholder: string;
 	onChangeText(event: any): void;
-	style?: Style;
+	onValueChange(event: any): void;
+	switch?: boolean;
+	containerStyle?: ViewStyle;
+	labelStyle?: TextStyle;
+	inputStyle?: TextStyle;
 	autoCorrect?: boolean;
 	keyboardType?: string;
 	multiline?: boolean;
 	numberOfLines?: number;
+	type?: string;
 }
 
-const Input = ({
-	style = { containerStyle: {}, labelStyle: {}, inputStyle: {} },
-	labelText,
-	onChangeText,
-	value,
-	autoCorrect,
-	autoCapitalize,
-	keyboardType,
-	multiline,
-	numberOfLines,
-	placeholder,
-	secureTextEntry,
-}: Props) => {
-	const { containerStyle, labelStyle, inputStyle } = style;
-	const { height, width } = Dimensions.get('window');
+class Input extends PureComponent<Props> {
+	render() {
+		const { height, width } = Dimensions.get('window');
 
-	return (
-		<View style={[styles.container, containerStyle]}>
-			<Text style={[styles.label, labelStyle]}>{labelText}</Text>
-			<TextInput
-				style={[styles.input, inputStyle]}
-				onChangeText={text => onChangeText(text)}
-				value={value}
-				placeholder={placeholder}
-				autoCorrect={autoCorrect}
-				autoCapitalize={autoCapitalize}
-				keyboardType={keyboardType}
-				multiline={multiline}
-				numberOfLines={numberOfLines}
-				secureTextEntry={secureTextEntry}
-			/>
-		</View>
-	);
-};
+		if (this.props.type === 'switch') {
+			return (
+				<View style={styles.switch}>
+					<Text style={[{ paddingHorizontal: 5 }, styles.label]}>
+						{this.props.labelText}
+					</Text>
+					<Switch
+						onValueChange={this.props.onValueChange}
+						value={this.props.value}
+					/>
+				</View>
+			);
+		}
+
+		return (
+			<View style={[styles.container, this.props.containerStyle]}>
+				<Text style={[styles.label, this.props.labelStyle]}>
+					{this.props.labelText}
+				</Text>
+				<TextInput
+					style={[styles.input, this.props.inputStyle]}
+					onChangeText={text => this.props.onChangeText(text)}
+					value={this.props.value}
+					placeholder={this.props.placeholder}
+					autoCorrect={this.props.autoCorrect}
+					autoCapitalize={this.props.autoCapitalize}
+					keyboardType={this.props.keyboardType}
+					multiline={this.props.multiline}
+					numberOfLines={this.props.numberOfLines}
+					secureTextEntry={this.props.secureTextEntry}
+				/>
+			</View>
+		);
+	}
+}
 
 export default Input;

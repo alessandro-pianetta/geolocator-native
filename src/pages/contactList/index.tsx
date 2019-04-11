@@ -27,7 +27,12 @@ class ContactsPage extends PureComponent<Props, State> {
 
 	renderItem = (item, index, section) => (
 		<View style={{ flex: 1 }} key={`${item}${index}`}>
-			<TouchableOpacity style={styles.clickable}>
+			<TouchableOpacity
+				style={styles.clickable}
+				onPress={() =>
+					this.props.navigation.navigate('ContactInfo', { ...item })
+				}
+			>
 				<Text>{item.firstName} </Text>
 				<Text style={styles.lastName}>{item.name}</Text>
 			</TouchableOpacity>

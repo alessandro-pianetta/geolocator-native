@@ -19,6 +19,13 @@ const styles = StyleSheet.create({
 		marginBottom: 5,
 		marginLeft: -10,
 	},
+	switch: {
+		alignItems: 'center',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		paddingHorizontal: 15,
+		width: '100%',
+	},
 });
 
 export default styles;
