@@ -16,12 +16,18 @@ import { applyMiddleware, combineReducers, createStore } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import '../ReactotronConfig';
 import createRootNavigator from '../routes';
+import historyReducer from './redux/History/reducer';
 // Redux
 import locationReducer from './redux/Location/reducer';
+
 // Utilities
 import { isLoggedIn } from './utils/authUtils';
 
-const store = createStore(locationReducer, {}, applyMiddleware(ReduxThunk));
+const store = createStore(
+	combineReducers({ location: locationReducer, history: historyReducer }),
+	{},
+	applyMiddleware(ReduxThunk),
+);
 
 export default class App extends PureComponent {
 	state = {
