@@ -1,9 +1,11 @@
 import React, { PureComponent } from 'react';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import { connect } from 'react-redux';
 // Components
 import Form from '../../components/Form';
 import Map from '../../components/Map';
+import * as permissions from '../../utils/permissionUtils';
+
 // Redux
 import { getLocation, watchLocation } from '../../redux/Location/actions';
 // Styles
@@ -26,7 +28,14 @@ interface Props {
 }
 
 class MapPage extends PureComponent<Props> {
-	componentWillMount() {
+	async componentWillMount() {
+		const { OS } = Platform;
+		if (OS === 'ios') {
+			await permissions.requestiOSContactPermissions();
+		} else {
+			await permissions.requestAndroidViewContactPermissions();
+			await permissions.requestAndroidWriteContactPermissions();
+		}
 		this.props.getLocation();
 	}
 

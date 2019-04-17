@@ -12,27 +12,16 @@
 import React, { PureComponent } from 'react';
 import { View } from 'react-native';
 import { Provider } from 'react-redux';
-import { applyMiddleware, combineReducers, createStore } from 'redux';
-import ReduxThunk from 'redux-thunk';
 import '../ReactotronConfig';
 import createRootNavigator from '../routes';
-import historyReducer from './redux/History/reducer';
-// Redux
-import locationReducer from './redux/Location/reducer';
-
-// Utilities
+import store from './store';
 import { isLoggedIn } from './utils/authUtils';
-
-const store = createStore(
-	combineReducers({ location: locationReducer, history: historyReducer }),
-	{},
-	applyMiddleware(ReduxThunk),
-);
 
 export default class App extends PureComponent {
 	state = {
 		checkedLogin: false,
 		loggedIn: false,
+		contacts: [],
 	};
 
 	async componentDidMount() {

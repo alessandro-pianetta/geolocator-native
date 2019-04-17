@@ -170,9 +170,18 @@ export default class ContactPage extends PureComponent<Props, any> {
 				},
 				placeholder: '',
 				object: address,
-				value: `${address.street} \n${address.city}, ${
-					address.state
-				} \n${address.postCode} ${address.country}`,
+				value:
+					address.street ||
+					address.city ||
+					address.state ||
+					address.postCode ||
+					address.country
+						? `${address.street} \n${address.city}${
+								address.street || address.city ? ',' : ''
+						  } ${address.state} \n${address.postCode} ${
+								address.country
+						  }`
+						: '',
 			},
 			{
 				keyboardType: 'numeric',
