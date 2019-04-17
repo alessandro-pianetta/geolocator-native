@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
+import RNContacts from 'react-native-contacts';
 import SectionListContacts from 'react-native-sectionlist-contacts';
 import { connect } from 'react-redux';
+
 import Border from '../../components/global/Border';
 import styles from './styles';
 
@@ -12,18 +14,19 @@ interface State {}
 class ContactsPage extends PureComponent<Props, State> {
 	sectionList: any;
 	state = {
-		dataArray: [
-			{ firstName: 'Fernando', name: 'Gomez' },
-			{ firstName: 'Alex', name: 'Pianetta' },
-			{ firstName: 'Chance', name: 'Milligan' },
-			{ firstName: 'Lynne', name: 'Reine' },
-			{ firstName: 'Ellie', name: 'Michalik' },
-			{ firstName: 'Molly', name: 'McIntosh-Case' },
-			{ firstName: 'Kamil', name: 'Hamid' },
-		],
+		contacts: [],
 	};
 
-	componentWillMount() {}
+	componentWillMount() {
+		RNContacts.getAll((err, phoneContacts) => {
+			const contacts = phoneContacts.map(contact => ({
+				...contact,
+				firstName: contact.givenName,
+				name: contact.familyName,
+			}));
+			this.setState({ contacts });
+		});
+	}
 
 	renderItem = (item, index, section) => (
 		<View style={{ flex: 1 }} key={`${item}${index}`}>
@@ -46,11 +49,11 @@ class ContactsPage extends PureComponent<Props, State> {
 			<View style={styles.container}>
 				<SectionListContacts
 					ref={(ref: any) => (this.sectionList = ref)}
-					sectionListData={this.state.dataArray}
+					sectionListData={this.state.contacts}
 					initialNumToRender={
-						this.state.dataArray.length > 25
+						this.state.contacts.length > 25
 							? 25
-							: this.state.dataArray.length
+							: this.state.contacts.length
 					}
 					renderItem={this.renderItem}
 					otherAlphabet='#'

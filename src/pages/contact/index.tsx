@@ -35,14 +35,52 @@ export default class ContactPage extends PureComponent<Props, any> {
 			phone: '',
 			radius: '',
 			message: '',
+			address: {
+				city: '',
+				country: '',
+				label: '',
+				postCode: '',
+				region: '',
+				state: '',
+				street: '',
+			},
+			addressStr: '',
 			editing: false,
 		};
 	}
 
 	componentDidMount = () => {
-		this.props.navigation.setParams({
+		const { navigation } = this.props;
+		navigation.setParams({
 			toggleEditing: this.toggleEditing,
 			editing: false,
+		});
+
+		const {
+			state: {
+				params: { givenName, familyName, phoneNumbers, postalAddresses },
+			},
+		} = navigation;
+
+		let mobilePhone = phoneNumbers.filter(
+			(num: any) => num.label === 'mobile',
+		);
+		mobilePhone.length
+			? (mobilePhone = mobilePhone[0].number)
+			: (mobilePhone = this.state.phone);
+
+		let address = postalAddresses.filter(
+			(loc: any) => loc.label === 'home',
+		);
+		address.length
+			? (address = address[0])
+			: (address = this.state.address);
+
+		this.setState({
+			firstName: givenName,
+			lastName: familyName,
+			phone: mobilePhone,
+			address,
 		});
 	}
 
@@ -53,21 +91,57 @@ export default class ContactPage extends PureComponent<Props, any> {
 		});
 	}
 
+	renderInfo = item => {
+		switch (typeof item.value) {
+			case 'boolean':
+				return <Text>{item.value ? 'true' : 'false'}</Text>;
+			case 'object':
+				return (
+					<View
+						style={{
+							flex: 1,
+							alignItems: 'flex-end',
+						}}
+					>
+						<Text style={{ marginLeft: 10 }}>
+							{Object.keys(item.value).length ? '' : null}
+						</Text>
+					</View>
+				);
+			default:
+				return (
+					<View
+						style={{
+							flex: 1,
+							alignItems: 'flex-end',
+						}}
+					>
+						<Text style={{ marginLeft: 10 }}>
+							{item.value ? item.value : null}
+						</Text>
+					</View>
+				);
+		}
+	}
+
 	render() {
 		const {
 			firstName,
 			lastName,
 			phone,
+			address,
 			radius,
 			message,
 			editing,
 		} = this.state;
 
+		console.log(this.state);
+
 		const mapForm = [
 			{
 				labelText: 'First Name',
 				onChangeText: (recipient: string) => {
-					this.setState({ recipient });
+					this.setState({ firstName: recipient });
 				},
 				placeholder: 'Alex',
 				value: firstName,
@@ -75,7 +149,7 @@ export default class ContactPage extends PureComponent<Props, any> {
 			{
 				labelText: 'Last Name',
 				onChangeText: (recipient: string) => {
-					this.setState({ recipient });
+					this.setState({ lastName: recipient });
 				},
 				placeholder: 'Alex',
 				value: lastName,
@@ -83,16 +157,28 @@ export default class ContactPage extends PureComponent<Props, any> {
 			{
 				keyboardType: 'phone-pad',
 				labelText: 'Phone number',
-				onChangeText: (phone: string) => {
-					this.setState({ phone });
+				onChangeText: (phoneNumber: string) => {
+					this.setState({ phone: phoneNumber });
 				},
 				placeholder: '(123) 456-7890',
 				value: phone,
 			},
 			{
+				labelText: 'Address',
+				onChangeText: location => {
+					console.log(location);
+				},
+				placeholder: '',
+				object: address,
+				value: `${address.street} \n${address.city}, ${
+					address.state
+				} \n${address.postCode} ${address.country}`,
+			},
+			{
 				keyboardType: 'numeric',
 				labelText: `Default alert radius`,
-				onChangeText: (radius: string) => this.setState({ radius }),
+				onChangeText: (defaultRadius: string) =>
+					this.setState({ radius: defaultRadius }),
 				placeholder: '2',
 				value: radius,
 			},
@@ -100,22 +186,20 @@ export default class ContactPage extends PureComponent<Props, any> {
 				labelText: 'Custom message',
 				multiline: true,
 				numberOfLines: 4,
-				onChangeText: (message: string) => {
-					this.setState({ message });
+				onChangeText: (customMessage: string) => {
+					this.setState({ message: customMessage });
 				},
 				placeholder: 'Enter custom message here',
 				value: message,
 			},
 		];
 
-		console.log(this.props.navigation);
-
 		return (
 			<View style={styles.container}>
 				{editing ? (
 					<Form form={mapForm} />
 				) : (
-					mapForm.slice(2, 5).map((item, index) => (
+					mapForm.slice(2, 6).map((item, index) => (
 						<View
 							style={styles.item}
 							key={`contactInfoItem${index}`}
@@ -128,20 +212,7 @@ export default class ContactPage extends PureComponent<Props, any> {
 							>
 								{item.labelText}
 							</Text>
-							{typeof item.value === 'boolean' ? (
-								<Text>{item.value ? 'true' : 'false'}</Text>
-							) : (
-								<View
-									style={{
-										flex: 1,
-										alignItems: 'flex-end',
-									}}
-								>
-									<Text style={{ marginLeft: 10 }}>
-										{item.value ? item.value : null}
-									</Text>
-								</View>
-							)}
+							{this.renderInfo(item)}
 						</View>
 					))
 				)}

@@ -41,10 +41,12 @@ class HistoryPage extends PureComponent<Props, State> {
 	}
 	render() {
 		const { history } = this.props;
+
 		return (
 			<View style={styles.container}>
-				{history.map((item: any) => (
+				{history.map((item: any, index: number) => (
 					<View
+						key={`historyItem${index}`}
 						style={{
 							borderBottomWidth: 1,
 							borderColor: 'gray',

@@ -39,6 +39,7 @@
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		38379C1349744E70A2C17B38 /* libRNGestureHandler-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71A093B23906474EA5D55551 /* libRNGestureHandler-tvOS.a */; };
 		45B974E52243423700D006CD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 45B974E42243423700D006CD /* GoogleService-Info.plist */; };
+		45E868BD2260159F00F5620B /* libRCTContacts.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45E868992260156900F5620B /* libRCTContacts.a */; };
 		805FBA60AA3D2217CE0656B1 /* libPods-geolocator-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 87CBD55A17A6E361085016B7 /* libPods-geolocator-tvOSTests.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		A39BF10F116B40DAB2107358 /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C89AC793874249C6876D6C86 /* libRNFirebase.a */; };
@@ -310,6 +311,13 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNFirebase;
 		};
+		45E868982260156900F5620B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 45E8688F2260156900F5620B /* RCTContacts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1441618E1BD0A79300FA4F59;
+			remoteInfo = RCTContacts;
+		};
 		5E9157321DD0AC6500FF2AA8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */;
@@ -376,6 +384,7 @@
 		3D4EEF993075E33B86F47C09 /* libPods-geolocator.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-geolocator.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4407C96A31B861BD52F25062 /* libPods-geolocator-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-geolocator-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		45B974E42243423700D006CD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Documents/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		45E8688F2260156900F5620B /* RCTContacts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTContacts.xcodeproj; path = "../node_modules/react-native-contacts/ios/RCTContacts.xcodeproj"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		68BC4A05BE592B94FC4EBA77 /* libPods-geolocatorTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-geolocatorTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D1AAF688B1F9A92205246F3 /* Pods-geolocator-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-geolocator-tvOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-geolocator-tvOSTests/Pods-geolocator-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -423,6 +432,7 @@
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
+				45E868BD2260159F00F5620B /* libRCTContacts.a in Frameworks */,
 				C46266C9105745A582499989 /* libRNGestureHandler.a in Frameworks */,
 				C97DF21989504BED1293E1B9 /* libPods-geolocator.a in Frameworks */,
 				A39BF10F116B40DAB2107358 /* libRNFirebase.a in Frameworks */,
@@ -631,6 +641,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		45E868902260156900F5620B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				45E868992260156900F5620B /* libRCTContacts.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		5E91572E1DD0AC6500FF2AA8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -652,6 +670,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				45E8688F2260156900F5620B /* RCTContacts.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -825,6 +844,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -843,6 +863,10 @@
 				{
 					ProductGroup = ADBDB9201DFEBF0600ED6528 /* Products */;
 					ProjectRef = ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */;
+				},
+				{
+					ProductGroup = 45E868902260156900F5620B /* Products */;
+					ProjectRef = 45E8688F2260156900F5620B /* RCTContacts.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302B61ABCB90400DB3ED1 /* Products */;
@@ -1143,6 +1167,13 @@
 			fileType = archive.ar;
 			path = libRNFirebase.a;
 			remoteRef = 45B974E22243364800D006CD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		45E868992260156900F5620B /* libRCTContacts.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTContacts.a;
+			remoteRef = 45E868982260156900F5620B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */ = {
