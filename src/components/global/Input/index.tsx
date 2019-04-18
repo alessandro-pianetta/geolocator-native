@@ -12,11 +12,12 @@ import styles from './styles';
 
 interface Props {
 	labelText: string;
-	value: string | boolean;
+	value: any;
+	object: any;
 	secureTextEntry?: boolean;
 	autoCapitalize?: string;
 	placeholder: string;
-	onChangeText(event: any): void;
+	onChangeText(event: any, secondary?: any): void;
 	onValueChange(event: any): void;
 	switch?: boolean;
 	containerStyle?: ViewStyle;
@@ -43,6 +44,96 @@ class Input extends PureComponent<Props> {
 						onValueChange={this.props.onValueChange}
 						value={this.props.value}
 					/>
+				</View>
+			);
+		}
+
+		if (this.props.type === 'address') {
+			const {
+				street,
+				city,
+				state,
+				postCode,
+				country,
+			} = this.props.object;
+
+			return (
+				<View style={[styles.container, this.props.containerStyle]}>
+					<Text style={[styles.label, this.props.labelStyle]}>
+						{this.props.labelText}
+					</Text>
+					<View>
+						<TextInput
+							style={[styles.input, this.props.inputStyle]}
+							onChangeText={text =>
+								this.props.onChangeText(text, 'street')
+							}
+							value={street}
+							placeholder={'Street address'}
+							autoCapitalize={'words'}
+						/>
+					</View>
+					<View style={{ flexDirection: 'row' }}>
+						<TextInput
+							style={[
+								{ flex: 1 },
+								styles.input,
+								this.props.inputStyle,
+							]}
+							onChangeText={text =>
+								this.props.onChangeText(text, 'city')
+							}
+							value={city}
+							placeholder={'City'}
+							autoCapitalize={'words'}
+						/>
+						<TextInput
+							style={[
+								{ flex: 1 },
+								styles.input,
+								this.props.inputStyle,
+							]}
+							onChangeText={text =>
+								this.props.onChangeText(text, 'state')
+							}
+							value={state}
+							placeholder={'state'}
+							autoCapitalize={'words'}
+						/>
+					</View>
+					<View style={{ flexDirection: 'row' }}>
+						<TextInput
+							style={[
+								{ flex: 1 },
+								styles.input,
+								this.props.inputStyle,
+							]}
+							onChangeText={text =>
+								this.props.onChangeText(text, 'postCode')
+							}
+							value={postCode}
+							placeholder={'ZIP Code'}
+							autoCapitalize={'words'}
+						/>
+						<TextInput
+							style={[
+								{ flex: 1 },
+								styles.input,
+								this.props.inputStyle,
+							]}
+							onChangeText={text =>
+								this.props.onChangeText(text, 'country')
+							}
+							value={country}
+							placeholder={'Country'}
+							autoCorrect={this.props.autoCorrect}
+							autoCapitalize={'words'}
+							keyboardType={this.props.keyboardType}
+							multiline={this.props.multiline}
+							numberOfLines={this.props.numberOfLines}
+							secureTextEntry={this.props.secureTextEntry}
+						/>
+					</View>
 				</View>
 			);
 		}

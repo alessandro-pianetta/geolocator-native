@@ -165,20 +165,23 @@ export default class ContactPage extends PureComponent<Props, any> {
 			},
 			{
 				labelText: 'Address',
-				onChangeText: location => {
-					console.log(location);
+				onChangeText: (text: string, field: string) => {
+					this.setState({
+						address: { ...this.state.address, [field]: text },
+					});
 				},
 				placeholder: '',
 				object: address,
+				type: 'address',
 				value:
 					address.street ||
 					address.city ||
 					address.state ||
 					address.postCode ||
 					address.country
-						? `${address.street} \n${address.city}${
+						? `${address.street}\n${address.city}${
 								address.street || address.city ? ',' : ''
-						  } ${address.state} \n${address.postCode} ${
+						  } ${address.state}\n${address.postCode} ${
 								address.country
 						  }`
 						: '',
