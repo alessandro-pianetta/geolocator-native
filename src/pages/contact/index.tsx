@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import Form from '../../components/Form/Form';
 import { getContact } from '../../redux/Contacts/actions';
@@ -35,7 +35,7 @@ class ContactPage extends PureComponent<Props, any> {
 		this.state = {
 			firstName: '',
 			lastName: '',
-			phone: '',
+			mobile: '',
 			radius: '',
 			message: '',
 			address: {
@@ -49,6 +49,7 @@ class ContactPage extends PureComponent<Props, any> {
 			},
 			addressStr: '',
 			editing: false,
+			loading: false,
 		};
 	}
 
@@ -61,13 +62,7 @@ class ContactPage extends PureComponent<Props, any> {
 
 		const {
 			state: {
-				params: {
-					recordID,
-					givenName,
-					familyName,
-					phoneNumbers,
-					postalAddresses,
-				},
+				params: { recordID },
 			},
 		} = navigation;
 
@@ -77,27 +72,7 @@ class ContactPage extends PureComponent<Props, any> {
 			(contact: any) => contact.recordID === recordID,
 		)[0];
 
-		let mobilePhone = phoneNumbers.filter(
-			(num: any) => num.label === 'mobile',
-		);
-		mobilePhone.length
-			? (mobilePhone = mobilePhone[0].number)
-			: (mobilePhone = this.state.phone);
-
-		let address = postalAddresses.filter(
-			(loc: any) => loc.label === 'home',
-		);
-		address.length
-			? (address = address[0])
-			: (address = this.state.address);
-
-		this.setState({
-			firstName: givenName,
-			lastName: familyName,
-			phone: mobilePhone,
-			address,
-			radius: contact.radius,
-		});
+		this.setState({ ...contact });
 	}
 
 	toggleEditing = () => {
@@ -144,7 +119,7 @@ class ContactPage extends PureComponent<Props, any> {
 		const {
 			firstName,
 			lastName,
-			phone,
+			mobile,
 			address,
 			radius,
 			message,
@@ -172,10 +147,10 @@ class ContactPage extends PureComponent<Props, any> {
 				keyboardType: 'phone-pad',
 				labelText: 'Phone number',
 				onChangeText: (phoneNumber: string) => {
-					this.setState({ phone: phoneNumber });
+					this.setState({ mobile: phoneNumber });
 				},
 				placeholder: '(123) 456-7890',
-				value: phone,
+				value: mobile,
 			},
 			{
 				labelText: 'Address',
@@ -218,6 +193,20 @@ class ContactPage extends PureComponent<Props, any> {
 			},
 		];
 
+		if (this.props.loading) {
+			return (
+				<View
+					style={{
+						flex: 1,
+						alignItems: 'center',
+						justifyContent: 'center',
+					}}
+				>
+					<ActivityIndicator />
+				</View>
+			);
+		}
+
 		return (
 			<View style={styles.container}>
 				{editing ? (
@@ -245,9 +234,13 @@ class ContactPage extends PureComponent<Props, any> {
 	}
 }
 
-const mapStateToProps = (state: any) => ({
-	contacts: state.contacts.contacts,
-});
+const mapStateToProps = (state: any) => {
+	console.log(state.contacts);
+	return {
+		contacts: state.contacts.contacts,
+		loading: state.contacts.loading,
+	};
+};
 
 export default connect(
 	mapStateToProps,
