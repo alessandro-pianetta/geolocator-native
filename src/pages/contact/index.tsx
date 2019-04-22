@@ -1,13 +1,16 @@
 import React, { PureComponent } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
+import { connect } from 'react-redux';
 import Form from '../../components/Form/Form';
+import { getContact } from '../../redux/Contacts/actions';
 import styles from './styles';
 
 export interface Props {
 	navigation: any;
+	getContact(recordId: string): void;
 }
 
-export default class ContactPage extends PureComponent<Props, any> {
+class ContactPage extends PureComponent<Props, any> {
 	static navigationOptions = ({ navigation }) => {
 		const {
 			state: {
@@ -49,7 +52,7 @@ export default class ContactPage extends PureComponent<Props, any> {
 		};
 	}
 
-	componentDidMount = () => {
+	componentDidMount = async () => {
 		const { navigation } = this.props;
 		navigation.setParams({
 			toggleEditing: this.toggleEditing,
@@ -58,9 +61,21 @@ export default class ContactPage extends PureComponent<Props, any> {
 
 		const {
 			state: {
-				params: { givenName, familyName, phoneNumbers, postalAddresses },
+				params: {
+					recordID,
+					givenName,
+					familyName,
+					phoneNumbers,
+					postalAddresses,
+				},
 			},
 		} = navigation;
+
+		// tslint:disable-next-line: await-promise
+		await this.props.getContact(recordID);
+		const contact = this.props.contacts.filter(
+			(contact: any) => contact.recordID === recordID,
+		)[0];
 
 		let mobilePhone = phoneNumbers.filter(
 			(num: any) => num.label === 'mobile',
@@ -81,6 +96,7 @@ export default class ContactPage extends PureComponent<Props, any> {
 			lastName: familyName,
 			phone: mobilePhone,
 			address,
+			radius: contact.radius,
 		});
 	}
 
@@ -135,8 +151,6 @@ export default class ContactPage extends PureComponent<Props, any> {
 			editing,
 		} = this.state;
 
-		console.log(this.state);
-
 		const mapForm = [
 			{
 				labelText: 'First Name',
@@ -179,11 +193,9 @@ export default class ContactPage extends PureComponent<Props, any> {
 					address.state ||
 					address.postCode ||
 					address.country
-						? `${address.street}\n${address.city}${
-								address.street || address.city ? ',' : ''
-						  } ${address.state}\n${address.postCode} ${
-								address.country
-						  }`
+						? `${address.street}\n${address.city} ${
+								address.state
+						  } ${address.postCode}\n${address.country}`
 						: '',
 			},
 			{
@@ -232,3 +244,12 @@ export default class ContactPage extends PureComponent<Props, any> {
 		);
 	}
 }
+
+const mapStateToProps = (state: any) => ({
+	contacts: state.contacts.contacts,
+});
+
+export default connect(
+	mapStateToProps,
+	{ getContact },
+)(ContactPage);

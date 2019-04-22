@@ -69,7 +69,7 @@ class Input extends PureComponent<Props> {
 								this.props.onChangeText(text, 'street')
 							}
 							value={street}
-							placeholder={'Street address'}
+							placeholder={'Street'}
 							autoCapitalize={'words'}
 						/>
 					</View>
