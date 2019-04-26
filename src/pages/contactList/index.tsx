@@ -26,7 +26,7 @@ class ContactsPage extends PureComponent<Props, State> {
 					this.props.navigation.navigate('ContactInfo', { ...item })
 				}
 			>
-				<Text>{item.firstName} </Text>
+				<Text>{item.givenName} </Text>
 				<Text style={styles.lastName}>{item.name}</Text>
 			</TouchableOpacity>
 		</View>

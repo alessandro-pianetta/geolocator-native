@@ -8,7 +8,7 @@ interface Props {}
 
 interface State {
 	unit: boolean;
-	firstName: string;
+	givenName: string;
 	lastName: string;
 	message: string;
 	radius: string;
@@ -17,7 +17,7 @@ interface State {
 class SettingsPage extends PureComponent<Props, State> {
 	componentWillMount() {}
 	state: State = {
-		firstName: '',
+		givenName: '',
 		lastName: '',
 		message: '',
 		radius: '',
@@ -26,16 +26,16 @@ class SettingsPage extends PureComponent<Props, State> {
 
 	render() {
 		const {} = this.props;
-		const { firstName, lastName, radius, message } = this.state;
+		const { givenName, lastName, radius, message } = this.state;
 
 		const settingsForm = [
 			{
 				labelText: 'First Name',
-				onChangeText: (firstName: string) => {
-					this.setState({ firstName });
+				onChangeText: (givenName: string) => {
+					this.setState({ givenName });
 				},
 				placeholder: 'John',
-				value: firstName,
+				value: givenName,
 			},
 
 			{

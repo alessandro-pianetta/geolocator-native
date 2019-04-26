@@ -1,61 +1,46 @@
 import { AsyncStorage } from 'react-native';
-import { getAllWithoutPhotos } from 'react-native-contacts';
+import { getAllWithoutPhotos, updateContact } from 'react-native-contacts';
 import firebase from 'react-native-firebase';
+import { formatContact } from './../../utils/contactUtils';
 
 import * as types from './types';
 
-export const getContactsStart = () => ({
-	type: types.GET_CONTACTS_START,
+// GET ALL CONTACTS FROM PHONE
+
+export const contactStart = () => ({
+	type: types.CONTACT_START,
 });
 
-export const getContactsFail = error => ({
-	type: types.GET_CONTACTS_FAILURE,
-	payload: { error },
+export const contactFail = error => ({
+	type: types.CONTACT_FAILURE,
+	payload: error,
 });
 
-export const getContacts = () => async dispatch => {
-	getContactStart();
+export const getContacts = (recordID: string) => async dispatch => {
+	dispatch(contactStart());
 	try {
 		getAllWithoutPhotos((err, phoneContacts) => {
 			const contacts = phoneContacts.map(contact => {
-				const { phoneNumbers, postalAddresses } = contact;
-				let mobilePhone = phoneNumbers.filter(
-					(num: any) => num.label === 'mobile',
-				);
-				mobilePhone.length
-					? (mobilePhone = mobilePhone[0].number)
-					: (mobilePhone = '');
-
-				let address = postalAddresses.filter(
-					(loc: any) => loc.label === 'home',
-				);
-				address.length ? (address = address[0]) : (address = '');
-
-				return {
-					...contact,
-					firstName: contact.givenName,
-					name: contact.familyName,
-					mobile: mobilePhone,
-					address,
-				};
+				return formatContact(contact);
 			});
 
 			return dispatch({
-				type: types.GET_CONTACTS_SUCCESS,
+				type: types.GET_CONTACTS,
 				payload: { contacts },
 			});
 		});
 	} catch (error) {
-		getContactsFail(error);
+		dispatch(contactFail(error));
 		console.error(error);
 	}
 };
 
+// GET SINGLE CONTACT FROM DB
+
 export const getContact = (recordID: string) => async dispatch => {
-	dispatch(getContactStart());
+	dispatch(contactStart());
 	try {
 		const userId: any = await AsyncStorage.getItem('uid');
-		const date: string = `${Date.now()}`;
 		const ref = await firebase
 			.firestore()
 			.collection('users')
@@ -66,25 +51,74 @@ export const getContact = (recordID: string) => async dispatch => {
 		const contact = ref.data();
 		if (!contact) {
 			return dispatch({
-				type: types.GET_CONTACT_SUCCESS,
+				type: types.GET_CONTACT,
 				payload: { recordID, radius: '', customMessage: '' },
 			});
 		}
 		return dispatch({
-			type: types.GET_CONTACT_SUCCESS,
+			type: types.GET_CONTACT,
 			payload: { recordID, ...contact },
 		});
 	} catch (error) {
-		dispatch(getContactFail(error));
+		dispatch(contactFail(error));
 		console.error(error);
 	}
 };
 
-export const getContactStart = () => ({
-	type: types.GET_CONTACT_START,
-});
+// EDIT CONTACT ON PHONE AND IN DB
 
-export const getContactFail = error => ({
-	type: types.GET_CONTACT_FAILURE,
-	payload: { error },
-});
+export const editContact = (recordID: string, contactInfo: any) => async (
+	dispatch: any,
+) => {
+	dispatch(contactStart());
+	try {
+		const userId: any = await AsyncStorage.getItem('uid');
+		const ref = await firebase
+			.firestore()
+			.collection('users')
+			.doc(userId)
+			.collection('contacts')
+			.doc(recordID)
+			.set(
+				{
+					radius: contactInfo.radius,
+					message: contactInfo.message,
+				},
+				{ merge: true },
+			);
+
+		getAllWithoutPhotos((err, phoneContacts) => {
+			const contacts = phoneContacts.map(contact => {
+				if (contact.recordID === recordID) {
+					contact.givenName = contactInfo.givenName;
+					contact.familyName = contactInfo.name;
+					contact.phoneNumbers.forEach(num => {
+						if (num.label === 'mobile') {
+							num.number = contactInfo.mobile;
+						}
+					});
+					const homeIndex = contact.postalAddresses.findIndex(
+						address => address.label === 'home',
+					);
+					contact.postalAddresses.splice(
+						homeIndex,
+						1,
+						contactInfo.address,
+					);
+
+					updateContact(contact, err => {
+						if (err) throw err;
+					});
+				}
+				return formatContact(contact);
+			});
+			return dispatch({
+				type: types.EDIT_CONTACT,
+				payload: { contacts },
+			});
+		});
+	} catch (error) {
+		dispatch(contactFail(error));
+		console.error(error);
+	}
+};
