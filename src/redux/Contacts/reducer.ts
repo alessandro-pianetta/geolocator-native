@@ -35,7 +35,10 @@ export default (state = INITIAL_STATE, action: any) => {
 				contacts: action.payload.contacts,
 				loading: false,
 			};
-
+		case types.ADD_CONTACT:
+			const newContactsList = [...state.contacts];
+			newContactsList.push(action.payload.contact);
+			return { ...state, contacts: newContactsList, loading: false };
 		default:
 			return state;
 	}

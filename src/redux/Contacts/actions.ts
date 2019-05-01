@@ -65,6 +65,22 @@ export const getContact = (recordID: string) => async dispatch => {
 	}
 };
 
+// ADD CONTACT IN APP
+
+export const addContact = (contact: any) => {
+	contactStart();
+	try {
+		const formattedContact = formatContact(contact);
+		return {
+			type: types.ADD_CONTACT,
+			payload: { contact },
+		};
+	} catch (error) {
+		contactFail(error);
+		console.error(error);
+	}
+};
+
 // EDIT CONTACT ON PHONE AND IN DB
 
 export const editContact = (recordID: string, contactInfo: any) => async (

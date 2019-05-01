@@ -81,7 +81,7 @@ class ContactPage extends PureComponent<Props, State> {
 		const {
 			setParams,
 			state: {
-				params: { recordID },
+				params: { recordID, familyName },
 			},
 		} = navigation;
 
@@ -92,24 +92,33 @@ class ContactPage extends PureComponent<Props, State> {
 
 		// tslint:disable-next-line: await-promise
 		await this.props.getContact(recordID);
-		const contact = this.props.contacts.filter(
+		let contact = this.props.contacts.filter(
 			(contact: any) => contact.recordID === recordID,
 		)[0];
 
-		this.setState({ ...contact, lastName: contact.name });
+		if (!contact) {
+			contact = navigation.state.params;
+		}
+
+		this.setState({ ...contact, lastName: familyName });
 	}
 
 	componentWillReceiveProps = (nextProps: Props) => {
+		const { navigation } = this.props;
 		const {
 			setParams,
 			state: {
 				params: { recordID, givenName, name },
 			},
-		} = this.props.navigation;
+		} = navigation;
 
-		const contact = nextProps.contacts.filter(
+		let contact = nextProps.contacts.filter(
 			(contact: any) => contact.recordID === recordID,
 		)[0];
+
+		if (!contact) {
+			contact = navigation.state.params;
+		}
 
 		this.setState({
 			...contact,

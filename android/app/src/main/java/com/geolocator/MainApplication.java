@@ -3,6 +3,7 @@ package com.geolocator;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.oblador.vectoricons.VectorIconsPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.auth.RNFirebaseAuthPackage;
@@ -31,7 +32,8 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(new MainReactPackage(), new MapsPackage(), new RNFirebasePackage(),
+      return Arrays.<ReactPackage>asList(new MainReactPackage(),
+            new VectorIconsPackage(), new MapsPackage(), new RNFirebasePackage(),
           new RNFirebaseAuthPackage(), new RNFirebaseFirestorePackage(), new RNFirebaseFunctionsPackage(),
           new RNGestureHandlerPackage(), new ReactNativeContacts());
     }
