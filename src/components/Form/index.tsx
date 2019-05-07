@@ -28,6 +28,7 @@ interface Props {
 	multiline?: boolean;
 	numberOfLines?: number;
 	addCallToHistory(recipient: string, message: string, phone: string): void;
+	navigation?: any;
 }
 
 interface State {
@@ -54,6 +55,35 @@ class Form extends PureComponent<Props, State> {
 		};
 	}
 
+	componentWillReceiveProps(nextProps: Props) {
+		const {
+			givenName,
+			mobile,
+			radius,
+			message,
+			address,
+		} = nextProps.navigation.state.params;
+
+		const addressStr =
+			address.street ||
+			address.city ||
+			address.state ||
+			address.postCode ||
+			address.country
+				? `${address.street} ${address.city} ${address.state} ${
+						address.postCode
+				  } ${address.country}`
+				: '';
+
+		this.setState({
+			recipient: givenName,
+			address: addressStr,
+			phone: mobile,
+			radius,
+			message,
+		});
+	}
+
 	handleSubmit() {
 		// this.props.formatAddress(this.state.address)
 		// this.props.convertRadius(this.state.radius, this.state.selectedIndex)
@@ -66,7 +96,7 @@ class Form extends PureComponent<Props, State> {
 
 	render() {
 		const { height, width } = Dimensions.get('window');
-		const { recipient, phone, radius, message } = this.state;
+		const { recipient, phone, radius, message, address } = this.state;
 
 		const mapForm = [
 			{
@@ -111,6 +141,7 @@ class Form extends PureComponent<Props, State> {
 		return (
 			<View style={styles.container}>
 				<GooglePlaces
+					address={address}
 					onPress={(address: string) => this.setState({ address })}
 				/>
 				<Border />

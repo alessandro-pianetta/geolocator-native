@@ -63,7 +63,7 @@ class MapPage extends PureComponent<Props> {
 					destination={destination}
 					radius={radius}
 				/>
-				<Form />
+				<Form navigation={this.props.navigation} />
 			</View>
 		);
 	}

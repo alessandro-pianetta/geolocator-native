@@ -1,3 +1,4 @@
+import { Button } from 'prefab-components';
 import React, { PureComponent } from 'react';
 import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
@@ -133,6 +134,10 @@ class ContactPage extends PureComponent<Props, State> {
 				name: contact.name,
 			});
 		}
+	}
+
+	handleSubmit = () => {
+		this.props.navigation.navigate('Map', this.state);
 	}
 
 	toggleEditing = () => {
@@ -292,7 +297,9 @@ class ContactPage extends PureComponent<Props, State> {
 							<Text
 								style={[
 									{ fontWeight: 'bold' },
-									!item.value && { color: '#00000080' },
+									!item.value && {
+										color: '#00000080',
+									},
 								]}
 							>
 								{item.labelText}
@@ -301,6 +308,12 @@ class ContactPage extends PureComponent<Props, State> {
 						</View>
 					))
 				)}
+				<Button
+					onPress={this.handleSubmit}
+					danger={true}
+					full={true}
+					text='Submit'
+				/>
 			</View>
 		);
 	}
