@@ -37,10 +37,9 @@ const LoggedInStack = createBottomTabNavigator(
 				title: `Contacts`,
 			}),
 		},
-		// tslint:disable-next-line: object-literal-sort-keys
-		History: {
-			screen: HistoryPage,
-		},
+		// History: {
+		// 	screen: HistoryPage,
+		// },
 		Settings: {
 			screen: SettingsPage,
 		},

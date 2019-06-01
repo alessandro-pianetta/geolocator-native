@@ -43,6 +43,7 @@
 		2DCD954D1E0B4F2C00145EB5 /* geolocatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* geolocatorTests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		38379C1349744E70A2C17B38 /* libRNGestureHandler-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71A093B23906474EA5D55551 /* libRNGestureHandler-tvOS.a */; };
+		451E9C1622A231030039F244 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 451E9C1522A231030039F244 /* Constants.m */; };
 		45B974E52243423700D006CD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 45B974E42243423700D006CD /* GoogleService-Info.plist */; };
 		45E868BD2260159F00F5620B /* libRCTContacts.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45E868992260156900F5620B /* libRCTContacts.a */; };
 		45F5C7BD2273CFD200DA7D7F /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45F5C7BA2273CFC000DA7D7F /* libRNVectorIcons.a */; };
@@ -417,6 +418,8 @@
 		394E5875F61B0A1282CFCBE4 /* Pods-geolocator-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-geolocator-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-geolocator-tvOS/Pods-geolocator-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		3D4EEF993075E33B86F47C09 /* libPods-geolocator.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-geolocator.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4407C96A31B861BD52F25062 /* libPods-geolocator-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-geolocator-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		451E9BE922A230E00039F244 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		451E9C1522A231030039F244 /* Constants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		45B974E42243423700D006CD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Documents/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		45E8688F2260156900F5620B /* RCTContacts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTContacts.xcodeproj; path = "../node_modules/react-native-contacts/ios/RCTContacts.xcodeproj"; sourceTree = "<group>"; };
 		45F5C7B42273CFC000DA7D7F /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
@@ -605,6 +608,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				451E9BE922A230E00039F244 /* Constants.h */,
+				451E9C1522A231030039F244 /* Constants.m */,
 			);
 			name = geolocator;
 			sourceTree = "<group>";
@@ -1519,6 +1524,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				451E9C1622A231030039F244 /* Constants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
