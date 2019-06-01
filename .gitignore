@@ -61,3 +61,5 @@ buck-out/
 
 src/consts/api.ts
 ios/Constants.m
+android/gradle.properties
+android/app/google-services.json
