@@ -114,9 +114,22 @@ android {
         }
     }
     buildTypes {
+        debug {
+            buildConfigField 'String', "APIKey", Geolocator_GoogleMapsAPIKey
+            resValue 'string', "api_key", Geolocator_GoogleMapsAPIKey
+            buildConfigField 'String', "AndroidAPIKey", Geolocator_AndroidMapsAPIKey
+            resValue 'string', "android_api_key", Geolocator_AndroidMapsAPIKey
+
+        }
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            buildConfigField 'String', "APIKey", Geolocator_GoogleMapsAPIKey
+            resValue 'string', "api_key", Geolocator_GoogleMapsAPIKey
+            buildConfigField 'String', "AndroidAPIKey", Geolocator_AndroidMapsAPIKey
+            resValue 'string', "android_api_key", Geolocator_AndroidMapsAPIKey
+
+
         }
     }
     // applicationVariants are e.g. debug, release
