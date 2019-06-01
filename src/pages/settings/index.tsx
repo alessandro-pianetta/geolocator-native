@@ -1,19 +1,81 @@
 import React, { PureComponent } from 'react';
-import { View } from 'react-native';
+import { Switch, Text, View } from 'react-native';
 import { connect } from 'react-redux';
+import Form from '../../components/Form/Form';
 import styles from './styles';
 
 interface Props {}
 
-interface State {}
+interface State {
+	unit: boolean;
+	givenName: string;
+	lastName: string;
+	message: string;
+	radius: string;
+}
 
 class SettingsPage extends PureComponent<Props, State> {
 	componentWillMount() {}
+	state: State = {
+		givenName: '',
+		lastName: '',
+		message: '',
+		radius: '',
+		unit: false,
+	};
 
 	render() {
 		const {} = this.props;
+		const { givenName, lastName, radius, message } = this.state;
 
-		return <View style={styles.container} />;
+		const settingsForm = [
+			{
+				labelText: 'First Name',
+				onChangeText: (givenName: string) => {
+					this.setState({ givenName });
+				},
+				placeholder: 'John',
+				value: givenName,
+			},
+
+			{
+				labelText: 'Last Name',
+				onChangeText: (lastName: string) => {
+					this.setState({ lastName });
+				},
+				placeholder: 'Smith',
+				value: lastName,
+			},
+			{
+				keyboardType: 'numeric',
+				labelText: `Default radius`,
+				onChangeText: (radius: string) => this.setState({ radius }),
+				placeholder: '2',
+				value: radius,
+			},
+			{
+				labelText: 'Default message',
+				multiline: true,
+				numberOfLines: 4,
+				onChangeText: (message: string) => {
+					this.setState({ message });
+				},
+				placeholder: 'Enter custom message here',
+				value: message,
+			},
+			{
+				labelText: `Use Metric`,
+				onValueChange: () => this.setState({ unit: !this.state.unit }),
+				type: 'switch',
+				value: this.state.unit,
+			},
+		];
+
+		return (
+			<View style={[styles.container, { paddingTop: 50 }]}>
+				<Form noFlex={true} form={settingsForm} />
+			</View>
+		);
 	}
 }
 

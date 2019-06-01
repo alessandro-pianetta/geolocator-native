@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Dimensions, View } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -11,6 +11,7 @@ import {
 	convertRadius,
 	formatAddress,
 } from '../../redux/Location/actions';
+import Border from '../global/Border';
 
 import GooglePlaces from '../GooglePlaces';
 
@@ -27,6 +28,7 @@ interface Props {
 	multiline?: boolean;
 	numberOfLines?: number;
 	addCallToHistory(recipient: string, message: string, phone: string): void;
+	navigation?: any;
 }
 
 interface State {
@@ -39,7 +41,7 @@ interface State {
 	sender: string;
 }
 
-class Form extends Component<Props, State> {
+class Form extends PureComponent<Props, State> {
 	constructor(props: Props) {
 		super(props);
 		this.state = {
@@ -51,6 +53,35 @@ class Form extends Component<Props, State> {
 			recipient: '',
 			sender: '',
 		};
+	}
+
+	componentWillReceiveProps(nextProps: Props) {
+		const {
+			givenName,
+			mobile,
+			radius,
+			message,
+			address,
+		} = nextProps.navigation.state.params;
+
+		const addressStr =
+			address.street ||
+			address.city ||
+			address.state ||
+			address.postCode ||
+			address.country
+				? `${address.street} ${address.city} ${address.state} ${
+						address.postCode
+				  } ${address.country}`
+				: '';
+
+		this.setState({
+			recipient: givenName,
+			address: addressStr,
+			phone: mobile,
+			radius,
+			message,
+		});
 	}
 
 	handleSubmit() {
@@ -65,7 +96,7 @@ class Form extends Component<Props, State> {
 
 	render() {
 		const { height, width } = Dimensions.get('window');
-		const { recipient, phone, radius, message } = this.state;
+		const { recipient, phone, radius, message, address } = this.state;
 
 		const mapForm = [
 			{
@@ -110,9 +141,10 @@ class Form extends Component<Props, State> {
 		return (
 			<View style={styles.container}>
 				<GooglePlaces
+					address={address}
 					onPress={(address: string) => this.setState({ address })}
 				/>
-				<View style={styles.border} />
+				<Border />
 				<FormArray form={mapForm} />
 				<Button
 					onPress={this.handleSubmit}

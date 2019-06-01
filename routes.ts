@@ -6,11 +6,24 @@ import {
 	createSwitchNavigator,
 } from 'react-navigation';
 // Components
-import ContactsPage from './src/pages/contacts';
+import ContactPage from './src/pages/contact';
+import ContactListPage from './src/pages/contactList';
 import HistoryPage from './src/pages/history';
 import LoginPage from './src/pages/login';
 import MapPage from './src/pages/map';
 import SettingsPage from './src/pages/settings';
+
+const ContactStack = createStackNavigator({
+	ContactList: {
+		screen: ContactListPage,
+		navigationOptions: () => ({
+			header: null,
+		}),
+	},
+	ContactInfo: {
+		screen: ContactPage,
+	},
+});
 
 const LoggedInStack = createBottomTabNavigator(
 	{
@@ -18,13 +31,15 @@ const LoggedInStack = createBottomTabNavigator(
 			screen: MapPage,
 		},
 		// tslint:disable-next-line:object-literal-sort-keys
-		Contacts: {
-			screen: ContactsPage,
+		ContactList: {
+			screen: ContactStack,
+			navigationOptions: () => ({
+				title: `Contacts`,
+			}),
 		},
-		// tslint:disable-next-line: object-literal-sort-keys
-		History: {
-			screen: HistoryPage,
-		},
+		// History: {
+		// 	screen: HistoryPage,
+		// },
 		Settings: {
 			screen: SettingsPage,
 		},

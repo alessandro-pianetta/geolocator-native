@@ -60,3 +60,4 @@ buck-out/
 *.jsbundle
 
 src/consts/api.ts
+ios/Constants.m

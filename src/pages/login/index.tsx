@@ -145,6 +145,7 @@ class LoginPage extends PureComponent<Props, State> {
 						username: input,
 					});
 				},
+				autoCapitalize: 'none',
 				placeholder: 'user@name.com',
 				value: this.state.username,
 			},

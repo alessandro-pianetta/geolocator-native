@@ -22,7 +22,6 @@ export default (state = INITIAL_STATE, action) => {
 		case types.WATCH_LOCATION:
 			return { ...state, currentLocation: action.payload };
 		case types.CONVERT_RADIUS:
-			console.log(action.payload);
 			return { ...state, radius: action.payload };
 		default:
 			return state;

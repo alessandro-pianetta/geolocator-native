@@ -9,24 +9,19 @@
  */
 
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View } from 'react-native';
 import { Provider } from 'react-redux';
-import { applyMiddleware, combineReducers, createStore } from 'redux';
-import ReduxThunk from 'redux-thunk';
 import '../ReactotronConfig';
 import createRootNavigator from '../routes';
-// Redux
-import locationReducer from './redux/Location/reducer';
-// Utilities
+import store from './store';
 import { isLoggedIn } from './utils/authUtils';
 
-const store = createStore(locationReducer, {}, applyMiddleware(ReduxThunk));
-
-export default class App extends Component {
+export default class App extends PureComponent {
 	state = {
 		checkedLogin: false,
 		loggedIn: false,
+		contacts: [],
 	};
 
 	async componentDidMount() {

@@ -135,12 +135,14 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-vector-icons')
     implementation(project(':react-native-maps')){
         exclude group: 'com.google.android.gms', module: 'play-services-base'
         exclude group: 'com.google.android.gms', module: 'play-services-maps'
     }
     implementation project(':react-native-firebase')
     implementation project(':react-native-gesture-handler')
+    implementation project(':react-native-contacts')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation "com.facebook.react:react-native:+"  // From node_modules
@@ -151,6 +153,7 @@ dependencies {
     implementation "com.google.firebase:firebase-auth:16.1.0"
     implementation "com.google.firebase:firebase-firestore:17.1.5"
     implementation "com.google.firebase:firebase-functions:16.1.3"
+    
 
 }
 

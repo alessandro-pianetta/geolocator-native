@@ -1168,6 +1168,14 @@
   resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.3.tgz#7ee330ba7caafb98090bece86a5ee44115904c2c"
   integrity sha512-ewFXqrQHlFsgc09MK5jP5iR7vumV/BYayNC6PgJO2LPe8vrnNFyjQjSppfEngITi0qvfKtzFvgKymGheFM9UOA==
 
+"@types/react-native-vector-icons@^6.4.0":
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/@types/react-native-vector-icons/-/react-native-vector-icons-6.4.0.tgz#3ff6b29c8e831f11364c12801ae7966dab8dcbe0"
+  integrity sha512-UNRMIMbqeryNDQvZVZoPyqXIKLWmLRInhN5gDySxquJcZvWNW+1NSm4lXQlRdzC9Da3mSU1QEppoeI438f2JRw==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" "*"
+
 "@types/react-native@*", "@types/react-native@^0.57.38":
   version "0.57.38"
   resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.57.38.tgz#2ff6ed1a7cc207afbfd87bf496513d96931d1446"
@@ -2326,6 +2334,11 @@ data-urls@^1.0.0:
     abab "^2.0.0"
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
+
+date-fns@^1.30.1:
+  version "1.30.1"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-1.30.1.tgz#2e71bf0b119153dbb4cc4e88d9ea5acfb50dc05c"
+  integrity sha512-hBSVCvSmWC+QypYObzwGOd9wqdDpOt+0wl0KbU+R+uuZBS1jN8VsD1ss3irQDknRj5NvxiTF6oj/nDRnN/UQNw==
 
 date-format@^2.0.0:
   version "2.0.0"
@@ -6100,7 +6113,7 @@ posix-character-classes@^0.1.0:
 
 "prefab-components@https://github.com/alessandro-pianetta/prefab-components.git":
   version "0.0.1"
-  resolved "https://github.com/alessandro-pianetta/prefab-components.git#4883c0c7f42373839bcb5b6e14dc5f5c888e0f23"
+  resolved "https://github.com/alessandro-pianetta/prefab-components.git#7a9cfdc98796af0e5817aa01719f6203b7d20b29"
   dependencies:
     react-native-vector-icons "^6.2.0"
 
@@ -6357,6 +6370,11 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
+react-native-contacts@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-contacts/-/react-native-contacts-4.0.0.tgz#5fa41527ca37cb3382890d3d867765c1ea4fb7e7"
+  integrity sha512-SkO4AiuiDkVKmL9+VotwLbiesp0EzcWstVWTM4K+eU7Bh+y/aAWkqCB0FyCm5kSNi6xHcZJr62ATh9S7blaZQg==
+
 react-native-firebase@^5.2.3:
   version "5.2.3"
   resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-5.2.3.tgz#1e7867b32028cad24785b181aa9aba07e3787109"
@@ -6409,6 +6427,13 @@ react-native-safe-area-view@^0.13.0:
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-1.0.0-alpha.22.tgz#7a120377b52aa9bbb94d0b8541a014026be9289b"
   integrity sha512-kSyAt0AeVU6N7ZonfV6dP6iZF8B7Bce+tk3eujXhzBGsLg0VSLnU7uE9VqJF0xdQrHR91ZjGgVMieo/8df9KTA==
 
+react-native-sectionlist-contacts@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/react-native-sectionlist-contacts/-/react-native-sectionlist-contacts-1.1.3.tgz#da200e1fa9667082e9418929087e0d807ea8eee8"
+  integrity sha512-CG7UPDQz+QoYZPGhDhJ/VCArU7B3LRo5Ac6qnr7NI3oPzJGQR5fX7ZkbS9OrFeIH2G5lxQ3xGpVUvFIJelgrFQ==
+  dependencies:
+    lodash "^4.17.11"
+
 react-native-tab-view@^1.0.0, react-native-tab-view@^1.2.0:
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-1.3.2.tgz#c4e43a538dcacce151938745cea09176beeccbc3"
@@ -6416,7 +6441,7 @@ react-native-tab-view@^1.0.0, react-native-tab-view@^1.2.0:
   dependencies:
     prop-types "^15.6.1"
 
-react-native-vector-icons@^6.2.0:
+react-native-vector-icons@^6.2.0, react-native-vector-icons@^6.4.2:
   version "6.4.2"
   resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-6.4.2.tgz#ee0b097e783387544ed160a3192a437c097e551d"
   integrity sha512-G7Y5HksOQkCanFWKJ+fjwP38XL8tQREOSnw7jrbq28AFrrv41YtafOF4uDSDS7HxMRXs17HeEzn24OzJb63iuA==

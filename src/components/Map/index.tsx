@@ -1,5 +1,5 @@
 import { any } from 'prop-types';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import MapView, { Animated, AnimatedRegion } from 'react-native-maps';
 import { normalizeName } from '../../utils/textUtils';
@@ -23,7 +23,7 @@ interface State {
 	destination: boolean;
 }
 
-class Map extends Component<Props, State> {
+class Map extends PureComponent<Props, State> {
 	constructor(props: Props) {
 		super(props);
 		this.state = {
