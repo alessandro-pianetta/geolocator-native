@@ -14,6 +14,10 @@ interface Location {
 	longitudeDelta?: number;
 }
 
+export const resetApp = () => ({
+	type: types.RESET_APP,
+});
+
 export const getLocation = () => {
 	return dispatch => {
 		navigator.geolocation.getCurrentPosition(pos => {

@@ -26,6 +26,10 @@
 	<true/>
 	<key>NSContactsUsageDescription</key>
 	<string>The app utilizes contact info to auto-populate certain fields of the form for the app's main function.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>The app needs to know the user's location for its main function.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>The app needs to know the user's location for its main function.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>The app needs to know the user's location for its main function.</string>
 	<key>UILaunchStoryboardName</key>

@@ -1,9 +1,9 @@
 import * as types from './types';
 
 const INITIAL_STATE = {
-	currentLocation: {},
-	destination: {},
-	initialLocation: {},
+	currentLocation: null,
+	destination: null,
+	initialLocation: null,
 	radius: 0,
 };
 
@@ -23,6 +23,8 @@ export default (state = INITIAL_STATE, action) => {
 			return { ...state, currentLocation: action.payload };
 		case types.CONVERT_RADIUS:
 			return { ...state, radius: action.payload };
+		case types.RESET_APP:
+			return { ...state, destination: null, radius: 0 };
 		default:
 			return state;
 	}
