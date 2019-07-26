@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Platform, View } from 'react-native';
+import { Animated, Platform, View } from 'react-native';
 import { connect } from 'react-redux';
 // Components
 import Form from '../../components/Form';
@@ -19,6 +19,7 @@ interface Location {
 }
 
 interface Props {
+	navigation: any;
 	initialLocation: Location;
 	currentLocation: Location;
 	destination: Location;
@@ -27,7 +28,25 @@ interface Props {
 	watchLocation(destination: Location, radius: string): void;
 }
 
-class MapPage extends PureComponent<Props> {
+interface State {
+	mapHeight: any;
+	outerFormHeight: any;
+	innerFormHeight: any;
+	formMargin: any;
+	formOpacity: any;
+	isMapOpen: boolean;
+}
+
+class MapPage extends PureComponent<Props, State> {
+	state = {
+		mapHeight: new Animated.Value(0),
+		outerFormHeight: new Animated.Value(1),
+		innerFormHeight: new Animated.Value(1),
+		formMargin: new Animated.Value(36),
+		formOpacity: new Animated.Value(1),
+		isMapOpen: false,
+	};
+
 	async componentWillMount() {
 		const { OS } = Platform;
 		if (OS === 'ios') {
@@ -39,10 +58,47 @@ class MapPage extends PureComponent<Props> {
 		this.props.getLocation();
 	}
 
+	animate = (mapOpen: boolean) => {
+		const {
+			mapHeight,
+			outerFormHeight,
+			innerFormHeight,
+			formOpacity,
+			formMargin,
+			isMapOpen,
+		} = this.state;
+
+		Animated.parallel([
+			Animated.timing(mapHeight, {
+				toValue: mapOpen ? 6 : 0,
+				duration: 1000,
+			}),
+			Animated.timing(outerFormHeight, {
+				toValue: mapOpen ? 1 : 5,
+				duration: 1000,
+			}),
+			Animated.timing(innerFormHeight, {
+				toValue: mapOpen ? 0 : 100,
+				duration: 1000,
+			}),
+			Animated.timing(formOpacity, {
+				toValue: mapOpen ? 0 : 1,
+				duration: mapOpen ? 1000 : 3000,
+			}),
+			Animated.timing(formMargin, {
+				toValue: mapOpen ? 0 : 36,
+				duration: 1000,
+			}),
+		]).start();
+
+		this.setState({ isMapOpen: mapOpen });
+	}
+
 	componentDidUpdate(prevProps: Props) {
 		const { destination, radius, watchLocation } = this.props;
 
 		if (destination !== prevProps.destination) {
+			this.animate(destination ? true : false);
 			watchLocation(destination, radius);
 		}
 	}
@@ -53,27 +109,46 @@ class MapPage extends PureComponent<Props> {
 			currentLocation,
 			destination,
 			radius,
+			navigation,
 		} = this.props;
+
+		const {
+			isMapOpen,
+			innerFormHeight,
+			formMargin,
+			mapHeight,
+			outerFormHeight,
+		} = this.state;
 
 		return (
 			<View style={styles.container}>
-				<Map
-					initialLocation={initialLocation}
-					currentLocation={currentLocation}
-					destination={destination}
-					radius={radius}
-				/>
-				<Form navigation={this.props.navigation} />
+				<Animated.View style={{ flex: mapHeight }}>
+					<Map
+						initialLocation={initialLocation}
+						currentLocation={currentLocation}
+						destination={destination}
+						radius={radius}
+					/>
+				</Animated.View>
+				<Animated.View style={{ flex: outerFormHeight }}>
+					<Form
+						isMapOpen={isMapOpen}
+						animate={this.animate}
+						navigation={navigation}
+						formHeight={innerFormHeight}
+						margin={formMargin}
+					/>
+				</Animated.View>
 			</View>
 		);
 	}
 }
 
 const mapStateToProps = (state: any) => ({
-	currentLocation: state.currentLocation,
-	destination: state.destination,
-	initialLocation: state.initialLocation,
-	radius: state.radius,
+	currentLocation: state.location.currentLocation,
+	destination: state.location.destination,
+	initialLocation: state.location.initialLocation,
+	radius: state.location.radius,
 });
 
 export default connect(

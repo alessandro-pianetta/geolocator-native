@@ -100,7 +100,7 @@ class Map extends PureComponent<Props, State> {
 
 	render() {
 		const { initialLocation, currentLocation, destination } = this.props;
-
+		console.log(this.props);
 		if (!initialLocation) {
 			return (
 				<View style={styles.container}>

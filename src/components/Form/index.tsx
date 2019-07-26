@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Dimensions, View } from 'react-native';
+import { Animated, Dimensions, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import styles from './styles';
@@ -16,6 +16,9 @@ import Border from '../global/Border';
 import GooglePlaces from '../GooglePlaces';
 
 interface Props {
+	isMapOpen: boolean;
+	margin: any;
+	formHeight: any;
 	style: any;
 	labelText: string;
 	value: string;
@@ -56,42 +59,41 @@ class Form extends PureComponent<Props, State> {
 	}
 
 	componentWillReceiveProps(nextProps: Props) {
-		const {
-			givenName,
-			mobile,
-			radius,
-			message,
-			address,
-		} = nextProps.navigation.state.params;
-
-		const addressStr =
-			address.street ||
-			address.city ||
-			address.state ||
-			address.postCode ||
-			address.country
-				? `${address.street} ${address.city} ${address.state} ${
-						address.postCode
-				  } ${address.country}`
-				: '';
-
-		this.setState({
-			recipient: givenName,
-			address: addressStr,
-			phone: mobile,
-			radius,
-			message,
-		});
+		// const {
+		// 	givenName,
+		// 	mobile,
+		// 	radius,
+		// 	message,
+		// 	address,
+		// } = nextProps.navigation.state.params;
+		// const addressStr =
+		// 	address.street ||
+		// 	address.city ||
+		// 	address.state ||
+		// 	address.postCode ||
+		// 	address.country
+		// 		? `${address.street} ${address.city} ${address.state} ${
+		// 				address.postCode
+		// 		  } ${address.country}`
+		// 		: '';
+		// this.setState({
+		// 	recipient: givenName,
+		// 	address: addressStr,
+		// 	phone: mobile,
+		// 	radius,
+		// 	message,
+		// });
 	}
 
-	handleSubmit() {
-		// this.props.formatAddress(this.state.address)
-		// this.props.convertRadius(this.state.radius, this.state.selectedIndex)
-		this.props.addCallToHistory(
-			this.state.recipient,
-			this.state.message,
-			this.state.phone,
-		);
+	handleSubmit = () => {
+		this.props.animate(!this.props.isMapOpen ? true : false);
+		// this.props.formatAddress(this.state.address);
+		// this.props.convertRadius(this.state.radius, this.state.selectedIndex);
+		// this.props.addCallToHistory(
+		// 	this.state.recipient,
+		// 	this.state.message,
+		// 	this.state.phone,
+		// );
 	}
 
 	render() {
@@ -139,20 +141,36 @@ class Form extends PureComponent<Props, State> {
 		];
 
 		return (
-			<View style={styles.container}>
+			<Animated.View
+				style={[
+					styles.container,
+					{
+						paddingTop: this.props.margin,
+					},
+				]}
+			>
 				<GooglePlaces
 					address={address}
 					onPress={(address: string) => this.setState({ address })}
 				/>
 				<Border />
-				<FormArray form={mapForm} />
+				<Animated.View
+					style={[
+						{
+							flex: this.props.formHeight,
+							opacity: this.props.formOpacity,
+						},
+					]}
+				>
+					{this.props.isMapOpen ? null : <FormArray form={mapForm} />}
+				</Animated.View>
 				<Button
 					onPress={this.handleSubmit}
 					danger={true}
 					full={true}
 					text='Submit'
 				/>
-			</View>
+			</Animated.View>
 		);
 	}
 }

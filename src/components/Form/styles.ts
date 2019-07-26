@@ -8,7 +8,9 @@ const styles = StyleSheet.create({
 		width: '100%',
 	},
 	container: {
-		flex: 3,
+		flex: 1,
+		justifyContent: 'flex-end',
+		alignContent: 'flex-end',
 	},
 	inputContainer: {
 		flex: 1,
