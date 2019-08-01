@@ -83,7 +83,7 @@ class MapPage extends PureComponent<Props, State> {
 			}),
 			Animated.timing(formOpacity, {
 				toValue: mapOpen ? 0 : 1,
-				duration: mapOpen ? 1000 : 3000,
+				duration: 1000,
 			}),
 			Animated.timing(formMargin, {
 				toValue: mapOpen ? 0 : 36,

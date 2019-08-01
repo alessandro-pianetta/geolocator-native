@@ -5,6 +5,7 @@ import styles from './styles';
 
 interface Props {
 	address: string;
+	editable: boolean;
 	onPress(event: any): void;
 }
 
@@ -28,12 +29,13 @@ class GooglePlaces extends PureComponent<Props, State> {
 	}
 
 	render() {
-		const { onPress, address } = this.props;
+		const { onPress, address, editable } = this.props;
 		const { hasData } = this.state;
 
 		return (
 			<GooglePlacesAutocomplete
 				ref={(ref: any) => (this.places = ref)}
+				editable={editable}
 				placeholder='Search'
 				minLength={2}
 				autoFocus={false}

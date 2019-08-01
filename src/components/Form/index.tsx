@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Animated, Dimensions, View } from 'react-native';
+import { Alert, Animated, Dimensions, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import styles from './styles';
@@ -19,6 +19,8 @@ interface Props {
 	isMapOpen: boolean;
 	margin: any;
 	formHeight: any;
+	formOpacity: any;
+	animate(event: boolean): void;
 	style: any;
 	labelText: string;
 	value: string;
@@ -86,6 +88,9 @@ class Form extends PureComponent<Props, State> {
 	}
 
 	handleSubmit = () => {
+		if (this.props.isMapOpen) {
+			Alert.alert('Do you really want to cancel?');
+		}
 		this.props.animate(!this.props.isMapOpen ? true : false);
 		// this.props.formatAddress(this.state.address);
 		// this.props.convertRadius(this.state.radius, this.state.selectedIndex);
@@ -150,10 +155,11 @@ class Form extends PureComponent<Props, State> {
 				]}
 			>
 				<GooglePlaces
+					editable={!this.props.isMapOpen}
 					address={address}
 					onPress={(address: string) => this.setState({ address })}
 				/>
-				<Border />
+				<Border style={{ marginTop: 50 }} />
 				<Animated.View
 					style={[
 						{
@@ -165,10 +171,23 @@ class Form extends PureComponent<Props, State> {
 					{this.props.isMapOpen ? null : <FormArray form={mapForm} />}
 				</Animated.View>
 				<Button
+					disabled={
+						!this.state.address.length ||
+						!this.state.phone.length ||
+						!this.state.radius.length ||
+						!this.state.recipient.length
+					}
+					grayedOut={
+						!this.state.address.length ||
+						!this.state.phone.length ||
+						!this.state.radius.length ||
+						!this.state.recipient.length
+					}
 					onPress={this.handleSubmit}
-					danger={true}
+					danger={this.props.isMapOpen ? true : false}
+					success={this.props.isMapOpen ? false : true}
 					full={true}
-					text='Submit'
+					text={!this.props.isMapOpen ? 'Submit' : 'Cancel'}
 				/>
 			</Animated.View>
 		);

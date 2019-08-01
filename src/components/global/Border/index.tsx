@@ -2,6 +2,10 @@ import React from 'react';
 import { View } from 'react-native';
 import styles from './styles';
 
-const Border = props => <View style={styles.border} />;
+interface Props {
+	style?: any;
+}
+
+const Border = (props: Props) => <View style={[props.style, styles.border]} />;
 
 export default Border;
