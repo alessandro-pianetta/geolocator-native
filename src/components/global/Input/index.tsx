@@ -8,6 +8,7 @@ import {
 	View,
 	ViewStyle,
 } from 'react-native';
+import { TextInputMask } from 'react-native-masked-text';
 import styles from './styles';
 
 interface Props {
@@ -43,6 +44,38 @@ class Input extends PureComponent<Props> {
 					<Switch
 						onValueChange={this.props.onValueChange}
 						value={this.props.value}
+					/>
+				</View>
+			);
+		}
+
+		if (this.props.type === 'phone') {
+			return (
+				<View style={[styles.container, this.props.containerStyle]}>
+					<Text style={[styles.label, this.props.labelStyle]}>
+						{this.props.labelText}
+					</Text>
+					<TextInputMask
+						style={[styles.input, this.props.inputStyle]}
+						type={'custom'}
+						options={{
+							/**
+							 * mask: (String | required | default '')
+							 * the mask pattern
+							 * 9 - accept digit.
+							 * A - accept alpha.
+							 * S - accept alphanumeric.
+							 * * - accept all, EXCEPT white space.
+							 */
+							mask: '(999) 999-9999',
+						}}
+						value={this.props.value}
+						onChangeText={text => {
+							console.log(text); // +1 (123) 456-78-90
+							this.props.onChangeText(text);
+						}}
+						placeholder={this.props.placeholder}
+						mask={'([000]) [000]-[0000]'}
 					/>
 				</View>
 			);

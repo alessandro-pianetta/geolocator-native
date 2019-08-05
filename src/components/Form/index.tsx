@@ -61,30 +61,30 @@ class Form extends PureComponent<Props, State> {
 	}
 
 	componentWillReceiveProps(nextProps: Props) {
-		// const {
-		// 	givenName,
-		// 	mobile,
-		// 	radius,
-		// 	message,
-		// 	address,
-		// } = nextProps.navigation.state.params;
-		// const addressStr =
-		// 	address.street ||
-		// 	address.city ||
-		// 	address.state ||
-		// 	address.postCode ||
-		// 	address.country
-		// 		? `${address.street} ${address.city} ${address.state} ${
-		// 				address.postCode
-		// 		  } ${address.country}`
-		// 		: '';
-		// this.setState({
-		// 	recipient: givenName,
-		// 	address: addressStr,
-		// 	phone: mobile,
-		// 	radius,
-		// 	message,
-		// });
+		const {
+			givenName,
+			mobile,
+			radius,
+			message,
+			address,
+		} = nextProps.navigation.state.params;
+		const addressStr =
+			address.street ||
+			address.city ||
+			address.state ||
+			address.postCode ||
+			address.country
+				? `${address.street} ${address.city} ${address.state} ${
+						address.postCode
+				  } ${address.country}`
+				: '';
+		this.setState({
+			recipient: givenName,
+			address: addressStr,
+			phone: mobile,
+			radius,
+			message,
+		});
 	}
 
 	handleSubmit = () => {
@@ -92,8 +92,8 @@ class Form extends PureComponent<Props, State> {
 			Alert.alert('Do you really want to cancel?');
 		}
 		this.props.animate(!this.props.isMapOpen ? true : false);
-		// this.props.formatAddress(this.state.address);
-		// this.props.convertRadius(this.state.radius, this.state.selectedIndex);
+		this.props.formatAddress(this.state.address);
+		this.props.convertRadius(this.state.radius, this.state.selectedIndex);
 		// this.props.addCallToHistory(
 		// 	this.state.recipient,
 		// 	this.state.message,
@@ -114,13 +114,13 @@ class Form extends PureComponent<Props, State> {
 				placeholder: 'Alex',
 				value: recipient,
 			},
-
 			{
 				keyboardType: 'phone-pad',
-				labelText: 'Phone number',
+				labelText: 'Phone Number',
 				onChangeText: (phone: string) => {
 					this.setState({ phone });
 				},
+				type: 'phone',
 				placeholder: '(123) 456-7890',
 				value: phone,
 			},

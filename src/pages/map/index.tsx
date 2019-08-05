@@ -96,7 +96,6 @@ class MapPage extends PureComponent<Props, State> {
 
 	componentDidUpdate(prevProps: Props) {
 		const { destination, radius, watchLocation } = this.props;
-
 		if (destination !== prevProps.destination) {
 			this.animate(destination ? true : false);
 			watchLocation(destination, radius);
