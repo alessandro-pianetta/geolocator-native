@@ -59,19 +59,10 @@ class Input extends PureComponent<Props> {
 						style={[styles.input, this.props.inputStyle]}
 						type={'custom'}
 						options={{
-							/**
-							 * mask: (String | required | default '')
-							 * the mask pattern
-							 * 9 - accept digit.
-							 * A - accept alpha.
-							 * S - accept alphanumeric.
-							 * * - accept all, EXCEPT white space.
-							 */
 							mask: '(999) 999-9999',
 						}}
 						value={this.props.value}
 						onChangeText={text => {
-							console.log(text); // +1 (123) 456-78-90
 							this.props.onChangeText(text);
 						}}
 						placeholder={this.props.placeholder}

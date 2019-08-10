@@ -61,44 +61,69 @@ class Form extends PureComponent<Props, State> {
 	}
 
 	componentWillReceiveProps(nextProps: Props) {
-		const {
-			givenName,
-			mobile,
-			radius,
-			message,
-			address,
-		} = nextProps.navigation.state.params;
-		const addressStr =
-			address.street ||
-			address.city ||
-			address.state ||
-			address.postCode ||
-			address.country
-				? `${address.street} ${address.city} ${address.state} ${
-						address.postCode
-				  } ${address.country}`
-				: '';
-		this.setState({
-			recipient: givenName,
-			address: addressStr,
-			phone: mobile,
-			radius,
-			message,
-		});
+		if (!nextProps) {
+			const {
+				givenName,
+				mobile,
+				radius,
+				message,
+				address,
+			} = nextProps.navigation.state.params;
+			const addressStr =
+				address.street ||
+				address.city ||
+				address.state ||
+				address.postCode ||
+				address.country
+					? `${address.street} ${address.city} ${address.state} ${
+							address.postCode
+					  } ${address.country}`
+					: '';
+			this.setState({
+				recipient: givenName,
+				address: addressStr,
+				phone: mobile,
+				radius,
+				message,
+			});
+		}
+	}
+
+	closeMap = () => {
+		console.log('map closing');
+		this.props.animate(false);
+	}
+
+	openMap = () => {
+		this.props.animate(true);
+		this.props.formatAddress(this.state.address);
+		this.props.convertRadius(this.state.radius, this.state.selectedIndex);
+		this.props.addCallToHistory(
+			this.state.recipient,
+			this.state.message,
+			this.state.phone,
+		);
 	}
 
 	handleSubmit = () => {
 		if (this.props.isMapOpen) {
-			Alert.alert('Do you really want to cancel?');
+			Alert.alert('Cancel', 'Do you really want to cancel?', [
+				{
+					text: 'Yes, please',
+					onPress: () => {
+						console.log('close map');
+						this.closeMap();
+					},
+				},
+				{
+					text: 'Never mind',
+					onPress: () => console.log('Cancel Pressed'),
+					style: 'cancel',
+				},
+			]);
+		} else {
+			this.openMap();
 		}
-		this.props.animate(!this.props.isMapOpen ? true : false);
-		this.props.formatAddress(this.state.address);
-		this.props.convertRadius(this.state.radius, this.state.selectedIndex);
-		// this.props.addCallToHistory(
-		// 	this.state.recipient,
-		// 	this.state.message,
-		// 	this.state.phone,
-		// );
 	}
 
 	render() {

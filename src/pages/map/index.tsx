@@ -67,7 +67,7 @@ class MapPage extends PureComponent<Props, State> {
 			formMargin,
 			isMapOpen,
 		} = this.state;
-
+		console.log('animate map');
 		Animated.parallel([
 			Animated.timing(mapHeight, {
 				toValue: mapOpen ? 6 : 0,
