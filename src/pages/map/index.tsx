@@ -67,7 +67,7 @@ class MapPage extends PureComponent<Props, State> {
 			formMargin,
 			isMapOpen,
 		} = this.state;
-
+		console.log('animate map');
 		Animated.parallel([
 			Animated.timing(mapHeight, {
 				toValue: mapOpen ? 6 : 0,
@@ -96,7 +96,6 @@ class MapPage extends PureComponent<Props, State> {
 
 	componentDidUpdate(prevProps: Props) {
 		const { destination, radius, watchLocation } = this.props;
-
 		if (destination !== prevProps.destination) {
 			this.animate(destination ? true : false);
 			watchLocation(destination, radius);

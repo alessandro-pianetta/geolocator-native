@@ -4,6 +4,7 @@ import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import Form from '../../components/Form/Form';
 import { editContact, getContact } from '../../redux/Contacts/actions';
+import { formatPhoneNumber } from '../../utils/contactUtils';
 import styles from './styles';
 
 export interface Props {
@@ -185,7 +186,11 @@ class ContactPage extends PureComponent<Props, State> {
 						}}
 					>
 						<Text style={{ marginLeft: 10 }}>
-							{item.value ? item.value : null}
+							{item.value
+								? item.type === 'phone'
+									? formatPhoneNumber(item.value)
+									: item.value
+								: null}
 						</Text>
 					</View>
 				);
@@ -222,10 +227,11 @@ class ContactPage extends PureComponent<Props, State> {
 			},
 			{
 				keyboardType: 'phone-pad',
-				labelText: 'Phone number',
+				labelText: 'Phone Number',
 				onChangeText: (phoneNumber: string) => {
 					this.setState({ mobile: phoneNumber });
 				},
+				type: 'phone',
 				placeholder: '(123) 456-7890',
 				value: mobile,
 			},

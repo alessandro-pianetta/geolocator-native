@@ -19,10 +19,8 @@ export const resetApp = () => ({
 });
 
 export const getLocation = () => {
-	console.log('get loc');
 	return dispatch => {
 		navigator.geolocation.getCurrentPosition(pos => {
-			console.log(pos);
 			dispatch({ type: types.GET_LOCATION, payload: pos.coords });
 		});
 	};
@@ -45,10 +43,8 @@ export const formatAddress = (address: string) => {
 };
 
 export const watchLocation = (destination: Location, radius: number) => {
-	console.log('watch loc');
 	return dispatch => {
 		const success = (pos: any) => {
-			console.log(pos);
 			const crd = pos.coords;
 			const distance = checkDistance(crd, destination);
 			if (typeof distance === 'number' && distance <= radius / 1000) {
