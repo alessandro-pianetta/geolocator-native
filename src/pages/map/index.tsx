@@ -58,48 +58,50 @@ class MapPage extends PureComponent<Props, State> {
 		this.props.getLocation();
 	}
 
-	animate = (mapOpen: boolean) => {
+	animate = (isMapOpen: boolean) => {
 		const {
 			mapHeight,
 			outerFormHeight,
 			innerFormHeight,
 			formOpacity,
 			formMargin,
-			isMapOpen,
 		} = this.state;
 
 		Animated.parallel([
 			Animated.timing(mapHeight, {
-				toValue: mapOpen ? 6 : 0,
+				toValue: isMapOpen ? 6 : 0,
 				duration: 1000,
 			}),
 			Animated.timing(outerFormHeight, {
-				toValue: mapOpen ? 1 : 5,
+				toValue: isMapOpen ? 1 : 5,
 				duration: 1000,
 			}),
 			Animated.timing(innerFormHeight, {
-				toValue: mapOpen ? 0 : 100,
+				toValue: isMapOpen ? 0 : 100,
 				duration: 1000,
 			}),
 			Animated.timing(formOpacity, {
-				toValue: mapOpen ? 0 : 1,
+				toValue: isMapOpen ? 0 : 1,
 				duration: 1000,
 			}),
 			Animated.timing(formMargin, {
-				toValue: mapOpen ? 0 : 36,
+				toValue: isMapOpen ? 0 : 36,
 				duration: 1000,
 			}),
 		]).start();
 
-		this.setState({ isMapOpen: mapOpen });
+		this.setState({ isMapOpen });
 	}
 
 	componentDidUpdate(prevProps: Props) {
 		const { destination, radius, watchLocation } = this.props;
 
 		if (destination !== prevProps.destination) {
+			console.log('component did update: destination', { destination });
 			this.animate(destination ? true : false);
-			watchLocation(destination, radius);
+			if (destination) {
+				watchLocation(destination, radius);
+			}
 		}
 	}
 

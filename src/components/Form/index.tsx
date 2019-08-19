@@ -10,6 +10,7 @@ import {
 	addCallToHistory,
 	convertRadius,
 	formatAddress,
+	resetApp,
 } from '../../redux/Location/actions';
 import Border from '../global/Border';
 
@@ -89,16 +90,24 @@ class Form extends PureComponent<Props, State> {
 
 	handleSubmit = () => {
 		if (this.props.isMapOpen) {
-			Alert.alert('Do you really want to cancel?');
+			Alert.alert('Do you really want to cancel?', '', [
+				{ text: 'OK', onPress: () => this.props.resetApp() },
+				{
+					text: 'Cancel',
+					onPress: () => console.log('Cancel Pressed'),
+					style: 'cancel',
+				},
+			]);
+		} else {
+			this.props.animate(true);
+			this.props.formatAddress(this.state.address);
+			this.props.convertRadius(this.state.radius);
+			// this.props.addCallToHistory(
+			// 	this.state.recipient,
+			// 	this.state.message,
+			// 	this.state.phone,
+			// );
 		}
-		this.props.animate(!this.props.isMapOpen ? true : false);
-		// this.props.formatAddress(this.state.address);
-		// this.props.convertRadius(this.state.radius, this.state.selectedIndex);
-		// this.props.addCallToHistory(
-		// 	this.state.recipient,
-		// 	this.state.message,
-		// 	this.state.phone,
-		// );
 	}
 
 	render() {
@@ -196,5 +205,5 @@ class Form extends PureComponent<Props, State> {
 
 export default connect(
 	null,
-	{ formatAddress, convertRadius, addCallToHistory },
+	{ formatAddress, convertRadius, addCallToHistory, resetApp },
 )(Form);
