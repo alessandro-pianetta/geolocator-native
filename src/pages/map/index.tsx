@@ -4,10 +4,11 @@ import { connect } from 'react-redux';
 // Components
 import Form from '../../components/Form';
 import Map from '../../components/Map';
+import { watchLocation } from '../../utils/locationUtils';
 import * as permissions from '../../utils/permissionUtils';
 
 // Redux
-import { getLocation, watchLocation } from '../../redux/Location/actions';
+import { getLocation } from '../../redux/Location/actions';
 // Styles
 import styles from './styles';
 
@@ -47,6 +48,8 @@ class MapPage extends PureComponent<Props, State> {
 		isMapOpen: false,
 	};
 
+	id: any;
+
 	async componentWillMount() {
 		const { OS } = Platform;
 		if (OS === 'ios') {
@@ -58,47 +61,51 @@ class MapPage extends PureComponent<Props, State> {
 		this.props.getLocation();
 	}
 
-	animate = (mapOpen: boolean) => {
+	animate = (isMapOpen: boolean) => {
 		const {
 			mapHeight,
 			outerFormHeight,
 			innerFormHeight,
 			formOpacity,
 			formMargin,
-			isMapOpen,
 		} = this.state;
 		console.log('animate map');
 		Animated.parallel([
 			Animated.timing(mapHeight, {
-				toValue: mapOpen ? 6 : 0,
+				toValue: isMapOpen ? 6 : 0,
 				duration: 1000,
 			}),
 			Animated.timing(outerFormHeight, {
-				toValue: mapOpen ? 1 : 5,
+				toValue: isMapOpen ? 1 : 5,
 				duration: 1000,
 			}),
 			Animated.timing(innerFormHeight, {
-				toValue: mapOpen ? 0 : 100,
+				toValue: isMapOpen ? 0 : 100,
 				duration: 1000,
 			}),
 			Animated.timing(formOpacity, {
-				toValue: mapOpen ? 0 : 1,
+				toValue: isMapOpen ? 0 : 1,
 				duration: 1000,
 			}),
 			Animated.timing(formMargin, {
-				toValue: mapOpen ? 0 : 36,
+				toValue: isMapOpen ? 0 : 36,
 				duration: 1000,
 			}),
 		]).start();
 
-		this.setState({ isMapOpen: mapOpen });
+		this.setState({ isMapOpen });
 	}
 
 	componentDidUpdate(prevProps: Props) {
-		const { destination, radius, watchLocation } = this.props;
+		const { destination, radius } = this.props;
+
 		if (destination !== prevProps.destination) {
 			this.animate(destination ? true : false);
-			watchLocation(destination, radius);
+			if (!destination) {
+				navigator.geolocation.clearWatch(this.id);
+			} else {
+				this.id = watchLocation(destination, radius);
+			}
 		}
 	}
 

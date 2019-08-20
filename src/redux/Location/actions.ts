@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Alert, AsyncStorage } from 'react-native';
 import firebase from 'react-native-firebase';
 import { MAPS_API_KEY } from '../../consts/api';
+import store from '../../store';
 import * as types from './types';
 // import { text } from 'react-native-communications';
 
@@ -42,43 +43,9 @@ export const formatAddress = (address: string) => {
 	};
 };
 
-export const watchLocation = (destination: Location, radius: number) => {
-	return dispatch => {
-		const success = (pos: any) => {
-			const crd = pos.coords;
-			const distance = checkDistance(crd, destination);
-			if (typeof distance === 'number' && distance <= radius / 1000) {
-				getETA(crd, destination);
-				navigator.geolocation.clearWatch(id);
-				return;
-			}
-			dispatch({ type: types.WATCH_LOCATION, payload: pos.coords });
-		};
-
-		const error = (err: any) => {
-			console.warn('ERROR(' + err.code + '): ' + err.message);
-		};
-
-		const checkDistance = (current: Location, destination: Location) => {
-			if (!destination) {
-				console.log('No target');
-				return undefined;
-			}
-
-			const p = 0.017453292519943295; // Math.PI / 180
-			const c = Math.cos;
-			const a =
-				0.5 -
-				c((destination.latitude - current.latitude) * p) / 2 +
-				(c(current.latitude * p) *
-					c(destination.latitude * p) *
-					(1 - c((destination.longitude - current.longitude) * p))) /
-					2;
-
-			return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
-		};
-
-		const id = navigator.geolocation.watchPosition(success, error);
+export const updateLocation = (coords: Location) => {
+	return (dispatch: any) => {
+		dispatch({ type: types.WATCH_LOCATION, payload: coords });
 	};
 };
 
@@ -92,32 +59,26 @@ export const convertRadius = (radius: string, units: boolean) => {
 	return { type: types.CONVERT_RADIUS, payload: meters };
 };
 
-const getETA = (currentLoc: Location, destination: Location) => {
-	console.log({
-		cLat: currentLoc.latitude,
-		cLng: currentLoc.longitude,
-		dLat: destination.latitude,
-		dLng: destination.longitude,
-	});
-	const DISTANCE_MATRIX_API_KEY = MAPS_API_KEY;
-	axios
-		.post(
-			`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${
-				currentLoc.latitude
-			},${currentLoc.longitude}&destinations=${destination.latitude},${
-				destination.longitude
-			}&key=${DISTANCE_MATRIX_API_KEY}`,
-		)
-		.then(response => {
+export const getETA = (currentLoc: Location, destination: Location) => {
+	return async (dispatch: any) => {
+		try {
+			const DISTANCE_MATRIX_API_KEY = MAPS_API_KEY;
+			const response = await axios.post(
+				`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${
+					currentLoc.latitude
+				},${currentLoc.longitude}&destinations=${
+					destination.latitude
+				},${destination.longitude}&key=${DISTANCE_MATRIX_API_KEY}`,
+			);
 			const eta = response.data.rows[0].elements[0].duration.text;
 			const message = `Your ride will arrive at your location in ${eta}.`;
 			const phoneNum = '+16503845666';
 			// text(phoneNum, message)
-			Alert.alert(`You will arrive at your destination in ${eta}.`);
-		})
-		.catch(error => {
+			dispatch({ type: types.ETA, payload: eta });
+		} catch (error) {
 			console.log(error);
-		});
+		}
+	};
 };
 
 export const addCallToHistory = (

@@ -117,7 +117,6 @@ class LoginPage extends PureComponent<Props, State> {
 						credential.user.toJSON(),
 					);
 					const { uid }: { uid: string } = credential.user.toJSON();
-					console.log('uid', uid);
 					AsyncStorage.setItem('uid', uid);
 					this.props.navigation.navigate('LoggedIn');
 				}
