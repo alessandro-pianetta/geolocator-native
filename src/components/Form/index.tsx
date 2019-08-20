@@ -62,30 +62,48 @@ class Form extends PureComponent<Props, State> {
 	}
 
 	componentWillReceiveProps(nextProps: Props) {
-		// const {
-		// 	givenName,
-		// 	mobile,
-		// 	radius,
-		// 	message,
-		// 	address,
-		// } = nextProps.navigation.state.params;
-		// const addressStr =
-		// 	address.street ||
-		// 	address.city ||
-		// 	address.state ||
-		// 	address.postCode ||
-		// 	address.country
-		// 		? `${address.street} ${address.city} ${address.state} ${
-		// 				address.postCode
-		// 		  } ${address.country}`
-		// 		: '';
-		// this.setState({
-		// 	recipient: givenName,
-		// 	address: addressStr,
-		// 	phone: mobile,
-		// 	radius,
-		// 	message,
-		// });
+		if (!nextProps) {
+			const {
+				givenName,
+				mobile,
+				radius,
+				message,
+				address,
+			} = nextProps.navigation.state.params;
+			const addressStr =
+				address.street ||
+				address.city ||
+				address.state ||
+				address.postCode ||
+				address.country
+					? `${address.street} ${address.city} ${address.state} ${
+							address.postCode
+					  } ${address.country}`
+					: '';
+			this.setState({
+				recipient: givenName,
+				address: addressStr,
+				phone: mobile,
+				radius,
+				message,
+			});
+		}
+	}
+
+	closeMap = () => {
+		console.log('map closing');
+		this.props.animate(false);
+	}
+
+	openMap = () => {
+		this.props.animate(true);
+		this.props.formatAddress(this.state.address);
+		this.props.convertRadius(this.state.radius, this.state.selectedIndex);
+		this.props.addCallToHistory(
+			this.state.recipient,
+			this.state.message,
+			this.state.phone,
+		);
 	}
 
 	handleSubmit = () => {
@@ -123,13 +141,13 @@ class Form extends PureComponent<Props, State> {
 				placeholder: 'Alex',
 				value: recipient,
 			},
-
 			{
 				keyboardType: 'phone-pad',
-				labelText: 'Phone number',
+				labelText: 'Phone Number',
 				onChangeText: (phone: string) => {
 					this.setState({ phone });
 				},
+				type: 'phone',
 				placeholder: '(123) 456-7890',
 				value: phone,
 			},
