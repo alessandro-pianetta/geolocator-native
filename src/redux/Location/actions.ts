@@ -5,7 +5,6 @@ import { Alert, AsyncStorage } from 'react-native';
 import firebase from 'react-native-firebase';
 import { MAPS_API_KEY } from '../../consts/api';
 import store from '../../store';
-import { checkDistance } from '../../utils/locationUtils';
 import * as types from './types';
 // import { text } from 'react-native-communications';
 
@@ -44,35 +43,9 @@ export const formatAddress = (address: string) => {
 	};
 };
 
-export const watchLocation = (dest: Location, radius: number) => {
-	return dispatch => {
-		const success = (pos: any) => {
-			const appState: any = store.getState();
-			const {
-				location: { destination },
-			} = appState;
-
-			console.log('watchLocation', destination);
-			if (!destination) {
-				navigator.geolocation.clearWatch(id);
-				return;
-			} else {
-				const crd = pos.coords;
-				const distance = checkDistance(crd, destination);
-				if (typeof distance === 'number' && distance <= radius / 1000) {
-					getETA(crd, destination);
-					navigator.geolocation.clearWatch(id);
-					return;
-				}
-				dispatch({ type: types.WATCH_LOCATION, payload: pos.coords });
-			}
-		};
-
-		const error = (err: any) => {
-			console.warn('ERROR(' + err.code + '): ' + err.message);
-		};
-
-		const id = navigator.geolocation.watchPosition(success, error);
+export const updateLocation = (coords: Location) => {
+	return (dispatch: any) => {
+		dispatch({ type: types.WATCH_LOCATION, payload: coords });
 	};
 };
 
@@ -86,26 +59,26 @@ export const convertRadius = (radius: string, units: boolean) => {
 	return { type: types.CONVERT_RADIUS, payload: meters };
 };
 
-const getETA = (currentLoc: Location, destination: Location) => {
-	const DISTANCE_MATRIX_API_KEY = MAPS_API_KEY;
-	axios
-		.post(
-			`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${
-				currentLoc.latitude
-			},${currentLoc.longitude}&destinations=${destination.latitude},${
-				destination.longitude
-			}&key=${DISTANCE_MATRIX_API_KEY}`,
-		)
-		.then(response => {
+export const getETA = (currentLoc: Location, destination: Location) => {
+	return async (dispatch: any) => {
+		try {
+			const DISTANCE_MATRIX_API_KEY = MAPS_API_KEY;
+			const response = await axios.post(
+				`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${
+					currentLoc.latitude
+				},${currentLoc.longitude}&destinations=${
+					destination.latitude
+				},${destination.longitude}&key=${DISTANCE_MATRIX_API_KEY}`,
+			);
 			const eta = response.data.rows[0].elements[0].duration.text;
 			const message = `Your ride will arrive at your location in ${eta}.`;
 			const phoneNum = '+16503845666';
 			// text(phoneNum, message)
-			Alert.alert(`You will arrive at your destination in ${eta}.`);
-		})
-		.catch(error => {
+			dispatch({ type: types.ETA, payload: eta });
+		} catch (error) {
 			console.log(error);
-		});
+		}
+	};
 };
 
 export const addCallToHistory = (

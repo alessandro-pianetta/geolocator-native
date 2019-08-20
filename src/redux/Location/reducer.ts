@@ -5,6 +5,7 @@ const INITIAL_STATE = {
 	destination: null,
 	initialLocation: null,
 	radius: 0,
+	eta: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -24,7 +25,9 @@ export default (state = INITIAL_STATE, action) => {
 		case types.CONVERT_RADIUS:
 			return { ...state, radius: action.payload };
 		case types.RESET_APP:
-			return { ...state, destination: null, radius: 0 };
+			return { ...state, destination: null, eta: null, radius: 0 };
+		case types.ETA:
+			return { ...state, eta: action.payload };
 		default:
 			return state;
 	}

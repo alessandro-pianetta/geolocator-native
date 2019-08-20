@@ -4,10 +4,11 @@ import { connect } from 'react-redux';
 // Components
 import Form from '../../components/Form';
 import Map from '../../components/Map';
+import { watchLocation } from '../../utils/locationUtils';
 import * as permissions from '../../utils/permissionUtils';
 
 // Redux
-import { getLocation, watchLocation } from '../../redux/Location/actions';
+import { getLocation } from '../../redux/Location/actions';
 // Styles
 import styles from './styles';
 
@@ -46,6 +47,8 @@ class MapPage extends PureComponent<Props, State> {
 		formOpacity: new Animated.Value(1),
 		isMapOpen: false,
 	};
+
+	id: any;
 
 	async componentWillMount() {
 		const { OS } = Platform;
@@ -94,13 +97,14 @@ class MapPage extends PureComponent<Props, State> {
 	}
 
 	componentDidUpdate(prevProps: Props) {
-		const { destination, radius, watchLocation } = this.props;
+		const { destination, radius } = this.props;
 
 		if (destination !== prevProps.destination) {
-			console.log('component did update: destination', { destination });
 			this.animate(destination ? true : false);
-			if (destination) {
-				watchLocation(destination, radius);
+			if (!destination) {
+				navigator.geolocation.clearWatch(this.id);
+			} else {
+				this.id = watchLocation(destination, radius);
 			}
 		}
 	}
