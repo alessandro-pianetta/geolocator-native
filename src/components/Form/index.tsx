@@ -12,6 +12,7 @@ import {
 	formatAddress,
 	resetApp,
 } from '../../redux/Location/actions';
+import BannerAdvert from '../global/Banner';
 import Border from '../global/Border';
 
 import GooglePlaces from '../GooglePlaces';
@@ -197,6 +198,7 @@ class Form extends PureComponent<Props, State> {
 				>
 					{this.props.isMapOpen ? null : <FormArray form={mapForm} />}
 				</Animated.View>
+				<BannerAdvert adUnitID='ca-app-pub-8155390171832078/6937225125' />
 				<Button
 					disabled={
 						!this.state.address.length ||
