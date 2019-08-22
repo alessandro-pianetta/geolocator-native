@@ -198,7 +198,7 @@ class Form extends PureComponent<Props, State> {
 				>
 					{this.props.isMapOpen ? null : <FormArray form={mapForm} />}
 				</Animated.View>
-				<BannerAdvert adUnitID='ca-app-pub-8155390171832078/6937225125' />
+				<BannerAdvert unitID='ca-app-pub-8155390171832078/6937225125' />
 				<Button
 					disabled={
 						!this.state.address.length ||

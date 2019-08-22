@@ -11,6 +11,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import { View } from 'react-native';
+import firebase from 'react-native-firebase';
 import { Provider } from 'react-redux';
 import '../ReactotronConfig';
 import createRootNavigator from '../routes';
@@ -25,6 +26,9 @@ export default class App extends PureComponent {
 	};
 
 	async componentDidMount() {
+		const admob = firebase
+			.admob()
+			.initialize('ca-app-pub-8155390171832078~1936179889');
 		const loggedIn = await isLoggedIn();
 		this.setState({ loggedIn, checkedLogin: true });
 	}
