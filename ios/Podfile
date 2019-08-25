@@ -9,10 +9,11 @@ target 'geolocator' do
   # use_frameworks!
 
   # Pods for geolocator
-    pod 'Firebase/Core', '~> 5.15.0'
-    pod 'Firebase/Auth', '~> 5.15.0'
-    pod 'Firebase/Firestore', '~> 5.15.0'
-    pod 'Firebase/Functions', '~> 5.15.0'
+    pod 'Firebase/Core', '~> 6.3.0'
+    pod 'Firebase/Auth', '~> 6.3.0'
+    pod 'Firebase/Firestore', '~> 6.3.0'
+    pod 'Firebase/Functions', '~> 6.3.0'
+    pod 'Firebase/AdMob', '~> 6.3.0'
 
   # See http://facebook.github.io/react-native/docs/integration-with-existing-apps.html#configuring-cocoapods-dependencies
   pod 'yoga', path: "#{rn_path}/ReactCommon/yoga/yoga.podspec"

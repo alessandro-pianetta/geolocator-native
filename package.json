@@ -1,70 +1,70 @@
 {
-  "name": "geolocator",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest --coverage --passWithNoTests"
-  },
-  "dependencies": {
-    "and": "^0.0.3",
-    "axios": "^0.18.0",
-    "date-fns": "^1.30.1",
-    "firebase-admin": "^7.0.0",
-    "firebase-functions": "^2.2.0",
-    "prefab-components": "https://github.com/alessandro-pianetta/prefab-components.git",
-    "react": "16.6.3",
-    "react-native": "0.58.6",
-    "react-native-contacts": "^4.0.0",
-    "react-native-firebase": "^5.2.3",
-    "react-native-gesture-handler": "^1.1.0",
-    "react-native-google-places-autocomplete": "^1.3.9",
-    "react-native-maps": "^0.23.0",
-    "react-native-masked-text": "^1.12.5",
-    "react-native-sectionlist-contacts": "^1.1.3",
-    "react-native-vector-icons": "^6.4.2",
-    "react-navigation": "^3.3.2",
-    "react-redux": "^6.0.1",
-    "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0",
-    "rm": "^0.1.8",
-    "twilio": "^3.29.1",
-    "validate.js": "^0.12.0"
-  },
-  "devDependencies": {
-    "@types/jest": "^24.0.11",
-    "@types/react": "^16.8.7",
-    "@types/react-native": "^0.57.38",
-    "@types/react-native-vector-icons": "^6.4.0",
-    "@types/react-navigation": "^3.0.5",
-    "@types/react-redux": "^7.0.3",
-    "@types/react-test-renderer": "^16.8.1",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-jest": "24.4.0",
-    "jest": "24.4.0",
-    "metro-react-native-babel-preset": "0.53.0",
-    "react-test-renderer": "16.6.3",
-    "reactotron-react-native": "^3.2.1",
-    "ts-jest": "^24.0.0",
-    "tslint": "^5.14.0",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-config-standard": "^8.0.1",
-    "tslint-react": "^3.6.0",
-    "typescript": "^3.3.3333"
-  },
-  "jest": {
-    "preset": "react-native",
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testRegex": "(/src/.*\\.(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ]
-  }
+	"name": "geolocator",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"start": "node node_modules/react-native/local-cli/cli.js start",
+		"test": "jest --coverage --passWithNoTests"
+	},
+	"dependencies": {
+		"and": "^0.0.3",
+		"axios": "^0.18.0",
+		"date-fns": "^1.30.1",
+		"firebase-admin": "^7.0.0",
+		"firebase-functions": "^2.2.0",
+		"prefab-components": "https://github.com/alessandro-pianetta/prefab-components.git",
+		"react": "16.6.3",
+		"react-native": "0.58.6",
+		"react-native-contacts": "^4.0.0",
+		"react-native-firebase": "^5.5.6",
+		"react-native-gesture-handler": "^1.1.0",
+		"react-native-google-places-autocomplete": "^1.3.9",
+		"react-native-maps": "^0.23.0",
+		"react-native-masked-text": "^1.12.5",
+		"react-native-sectionlist-contacts": "^1.1.3",
+		"react-native-vector-icons": "^6.4.2",
+		"react-navigation": "^3.3.2",
+		"react-redux": "^6.0.1",
+		"redux": "^4.0.1",
+		"redux-thunk": "^2.3.0",
+		"rm": "^0.1.8",
+		"twilio": "^3.29.1",
+		"validate.js": "^0.12.0"
+	},
+	"devDependencies": {
+		"@types/jest": "^24.0.11",
+		"@types/react": "^16.8.7",
+		"@types/react-native": "^0.57.38",
+		"@types/react-native-vector-icons": "^6.4.0",
+		"@types/react-navigation": "^3.0.5",
+		"@types/react-redux": "^7.0.3",
+		"@types/react-test-renderer": "^16.8.1",
+		"babel-core": "^7.0.0-bridge.0",
+		"babel-jest": "24.4.0",
+		"jest": "24.4.0",
+		"metro-react-native-babel-preset": "0.53.0",
+		"react-test-renderer": "16.6.3",
+		"reactotron-react-native": "^3.2.1",
+		"ts-jest": "^24.0.0",
+		"tslint": "^5.14.0",
+		"tslint-config-prettier": "^1.18.0",
+		"tslint-config-standard": "^8.0.1",
+		"tslint-react": "^3.6.0",
+		"typescript": "^3.3.3333"
+	},
+	"jest": {
+		"preset": "react-native",
+		"transform": {
+			"^.+\\.tsx?$": "ts-jest"
+		},
+		"testRegex": "(/src/.*\\.(test|spec))\\.(jsx?|tsx?)$",
+		"moduleFileExtensions": [
+			"ts",
+			"tsx",
+			"js",
+			"jsx",
+			"json",
+			"node"
+		]
+	}
 }
