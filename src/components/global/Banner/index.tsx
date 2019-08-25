@@ -24,14 +24,14 @@ export default class BannerAdvert extends PureComponent<Props> {
 
 		return (
 			<View style={styles.container}>
-				<this.banner
+				{/* <this.banner
 					unitId={this.props.unitID}
 					size={`${width}x150`}
 					request={this.request.build()}
 					onAdLoaded={() => {
 						console.log('Advert loaded');
 					}}
-				/>
+				/> */}
 			</View>
 		);
 	}
