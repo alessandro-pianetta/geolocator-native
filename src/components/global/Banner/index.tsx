@@ -21,13 +21,11 @@ export default class BannerAdvert extends PureComponent<Props> {
 
 	render() {
 		const { width } = Dimensions.get('window');
-		console.log(width);
 
 		return (
 			<View style={styles.container}>
 				<this.banner
 					unitId={this.props.unitID}
-					// size={'FULL_BANNER'}
 					size={`${width}x150`}
 					request={this.request.build()}
 					onAdLoaded={() => {
