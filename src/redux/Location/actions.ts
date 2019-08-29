@@ -59,32 +59,11 @@ export const convertRadius = (radius: string, units: boolean) => {
 	return { type: types.CONVERT_RADIUS, payload: meters };
 };
 
-export const getETA = (currentLoc: Location, destination: Location) => {
-	return async (dispatch: any) => {
-		try {
-			const DISTANCE_MATRIX_API_KEY = MAPS_API_KEY;
-			const response = await axios.post(
-				`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${
-					currentLoc.latitude
-				},${currentLoc.longitude}&destinations=${
-					destination.latitude
-				},${destination.longitude}&key=${DISTANCE_MATRIX_API_KEY}`,
-			);
-			const eta = response.data.rows[0].elements[0].duration.text;
-			const message = `Your ride will arrive at your location in ${eta}.`;
-			const phoneNum = '+16503845666';
-			// text(phoneNum, message)
-			dispatch({ type: types.ETA, payload: eta });
-		} catch (error) {
-			console.log(error);
-		}
-	};
-};
-
 export const addCallToHistory = (
 	firstName: string,
 	message: string,
 	phoneNumber: string,
+	eta: any,
 ) => async () => {
 	try {
 		const userId = await AsyncStorage.getItem('uid');
@@ -95,12 +74,14 @@ export const addCallToHistory = (
 			.doc(userId)
 			.collection('history')
 			.doc(date);
-		await ref.set({
-			createdAt: date,
-			firstName: 'Alex',
-			message,
-			phoneNumber,
-		});
+		console.log({ firstName, message, phoneNumber, eta });
+		// await ref.set({
+		// 	createdAt: date,
+		// 	firstName,
+		// 	message,
+		// 	phoneNumber,
+		// 	eta,
+		// });
 	} catch (error) {
 		console.error(error);
 	}

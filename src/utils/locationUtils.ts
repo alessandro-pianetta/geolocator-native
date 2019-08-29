@@ -1,6 +1,12 @@
+import axios from 'axios';
 import { Alert } from 'react-native';
 import store from '../store';
-import { getETA, resetApp, updateLocation } from './../redux/Location/actions';
+import { MAPS_API_KEY } from './../consts/api';
+import {
+	addCallToHistory,
+	resetApp,
+	updateLocation,
+} from './../redux/Location/actions';
 
 interface Location {
 	longitude: number;
@@ -28,14 +34,39 @@ const checkDistance = (current: Location, destination: Location) => {
 	return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
 };
 
-const watchLocation = (destination: Location, radius: string) => {
+const getETA = async (currentLoc: Location, destination: Location) => {
+	try {
+		const DISTANCE_MATRIX_API_KEY = MAPS_API_KEY;
+		const response = await axios.post(
+			`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${
+				currentLoc.latitude
+			},${currentLoc.longitude}&destinations=${destination.latitude},${
+				destination.longitude
+			}&key=${DISTANCE_MATRIX_API_KEY}`,
+		);
+		return response.data.rows[0].elements[0].duration.text;
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+const watchLocation = (
+	firstName: string,
+	message: string,
+	phoneNumber: string,
+	destination: Location,
+	radius: string,
+) => {
 	const success = async (pos: any) => {
 		try {
 			const crd = pos.coords;
 			const distance = checkDistance(crd, destination);
 			if (typeof distance === 'number' && distance <= radius / 1000) {
 				navigator.geolocation.clearWatch(id);
-				store.dispatch(getETA(crd, destination));
+				const eta = await getETA(crd, destination);
+				store.dispatch(
+					addCallToHistory(firstName, message, phoneNumber, eta),
+				);
 				Alert.alert('You have arrived at your destination', '', [
 					{
 						text: 'OK',
@@ -59,4 +90,4 @@ const watchLocation = (destination: Location, radius: string) => {
 	return id;
 };
 
-export { checkDistance, watchLocation };
+export { checkDistance, watchLocation, getETA };

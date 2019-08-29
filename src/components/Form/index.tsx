@@ -6,12 +6,14 @@ import styles from './styles';
 
 import { Button } from 'prefab-components';
 import FormArray from '../../components/Form/Form';
+import { setFormInfo } from '../../redux/Form/actions';
 import {
 	addCallToHistory,
 	convertRadius,
 	formatAddress,
 	resetApp,
 } from '../../redux/Location/actions';
+
 import BannerAdvert from '../global/Banner';
 import Border from '../global/Border';
 
@@ -92,40 +94,33 @@ class Form extends PureComponent<Props, State> {
 	}
 
 	closeMap = () => {
-		console.log('map closing');
-		this.props.animate(false);
+		Alert.alert('Do you really want to cancel?', '', [
+			{
+				text: 'OK',
+				onPress: () => this.props.resetApp(),
+			},
+			{
+				text: 'Cancel',
+				onPress: () => console.log('Cancel Pressed'),
+				style: 'cancel',
+			},
+		]);
+		this.props.setFormInfo('', '', '');
 	}
 
 	openMap = () => {
+		const { recipient, phone, message, address, radius } = this.state;
 		this.props.animate(true);
-		this.props.formatAddress(this.state.address);
-		this.props.convertRadius(this.state.radius, this.state.selectedIndex);
-		this.props.addCallToHistory(
-			this.state.recipient,
-			this.state.message,
-			this.state.phone,
-		);
+		this.props.setFormInfo(recipient, message, phone);
+		this.props.formatAddress(address);
+		this.props.convertRadius(radius);
 	}
 
 	handleSubmit = () => {
 		if (this.props.isMapOpen) {
-			Alert.alert('Do you really want to cancel?', '', [
-				{ text: 'OK', onPress: () => this.props.resetApp() },
-				{
-					text: 'Cancel',
-					onPress: () => console.log('Cancel Pressed'),
-					style: 'cancel',
-				},
-			]);
+			this.closeMap();
 		} else {
-			this.props.animate(true);
-			this.props.formatAddress(this.state.address);
-			this.props.convertRadius(this.state.radius);
-			// this.props.addCallToHistory(
-			// 	this.state.recipient,
-			// 	this.state.message,
-			// 	this.state.phone,
-			// );
+			this.openMap();
 		}
 	}
 
@@ -198,7 +193,7 @@ class Form extends PureComponent<Props, State> {
 				>
 					{this.props.isMapOpen ? null : <FormArray form={mapForm} />}
 				</Animated.View>
-				<BannerAdvert unitID='ca-app-pub-8155390171832078/6937225125' />
+				{/* <BannerAdvert unitID='ca-app-pub-8155390171832078/6937225125' /> */}
 				<Button
 					disabled={
 						!this.state.address.length ||
@@ -225,5 +220,5 @@ class Form extends PureComponent<Props, State> {
 
 export default connect(
 	null,
-	{ formatAddress, convertRadius, addCallToHistory, resetApp },
+	{ formatAddress, convertRadius, addCallToHistory, resetApp, setFormInfo },
 )(Form);

@@ -19,12 +19,19 @@ interface Location {
 	longitudeDelta?: number;
 }
 
+interface FormInfo {
+	firstName: string;
+	phoneNumber: string;
+	message: string;
+}
+
 interface Props {
 	navigation: any;
 	initialLocation: Location;
 	currentLocation: Location;
 	destination: Location;
 	radius: string;
+	form: FormInfo;
 	getLocation(): void;
 	watchLocation(destination: Location, radius: string): void;
 }
@@ -69,7 +76,7 @@ class MapPage extends PureComponent<Props, State> {
 			formOpacity,
 			formMargin,
 		} = this.state;
-		console.log('animate map');
+
 		Animated.parallel([
 			Animated.timing(mapHeight, {
 				toValue: isMapOpen ? 6 : 0,
@@ -97,14 +104,24 @@ class MapPage extends PureComponent<Props, State> {
 	}
 
 	componentDidUpdate(prevProps: Props) {
-		const { destination, radius } = this.props;
+		const {
+			destination,
+			radius,
+			form: { firstName, phoneNumber, message },
+		} = this.props;
 
 		if (destination !== prevProps.destination) {
 			this.animate(destination ? true : false);
 			if (!destination) {
 				navigator.geolocation.clearWatch(this.id);
 			} else {
-				this.id = watchLocation(destination, radius);
+				this.id = watchLocation(
+					firstName,
+					phoneNumber,
+					message,
+					destination,
+					radius,
+				);
 			}
 		}
 	}
@@ -150,11 +167,12 @@ class MapPage extends PureComponent<Props, State> {
 	}
 }
 
-const mapStateToProps = (state: any) => ({
-	currentLocation: state.location.currentLocation,
-	destination: state.location.destination,
-	initialLocation: state.location.initialLocation,
-	radius: state.location.radius,
+const mapStateToProps = ({ location, form }) => ({
+	currentLocation: location.currentLocation,
+	destination: location.destination,
+	initialLocation: location.initialLocation,
+	radius: location.radius,
+	form,
 });
 
 export default connect(
