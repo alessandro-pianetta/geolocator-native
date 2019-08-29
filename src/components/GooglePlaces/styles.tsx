@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 		backgroundColor: 'transparent',
 		flex: 1,
 		fontSize: 15,
-		lineHeight: 22.5,
+		lineHeight: 15,
 		paddingBottom: 0,
 	},
 	textInputContainer: {
