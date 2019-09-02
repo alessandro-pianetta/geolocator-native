@@ -48,6 +48,7 @@ interface State {
 	radius: string;
 	recipient: string;
 	sender: string;
+	invalidRadius: boolean;
 }
 
 class Form extends PureComponent<Props, State> {
@@ -73,6 +74,7 @@ class Form extends PureComponent<Props, State> {
 				message,
 				address,
 			} = nextProps.navigation.state.params;
+
 			const addressStr =
 				address.street ||
 				address.city ||
@@ -83,6 +85,7 @@ class Form extends PureComponent<Props, State> {
 							address.postCode
 					  } ${address.country}`
 					: '';
+
 			this.setState({
 				recipient: givenName,
 				address: addressStr,
@@ -134,7 +137,7 @@ class Form extends PureComponent<Props, State> {
 				onChangeText: (recipient: string) => {
 					this.setState({ recipient });
 				},
-				placeholder: 'Alex',
+				placeholder: '',
 				value: recipient,
 			},
 			{
@@ -150,11 +153,28 @@ class Form extends PureComponent<Props, State> {
 			{
 				keyboardType: 'numeric',
 				labelText: `Distance in ${
-					this.props.usesMetric ? 'km' : 'miles'
+					this.props.usesMetric ? 'kilometers' : 'miles'
 				} to send alert`,
-				onChangeText: (radius: string) => this.setState({ radius }),
-				placeholder: '2',
+				onChangeText: (radius: string) => {
+					const maxRadius = this.props.usesMetric ? 50 : 30;
+					this.setState({ radius });
+					if (parseFloat(radius) > maxRadius) {
+						this.setState({ invalidRadius: true });
+					} else {
+						if (this.state.invalidRadius) {
+							this.setState({
+								invalidRadius: false,
+							});
+						}
+					}
+				},
+				placeholder: `Maximum radius is ${
+					this.props.usesMetric ? '50 km' : '30 mi'
+				}`,
+				type: 'radius',
+				usesMetric: this.props.usesMetric,
 				value: radius,
+				invalidRadius: this.state.invalidRadius,
 			},
 			{
 				labelText: 'Custom message',
@@ -199,13 +219,15 @@ class Form extends PureComponent<Props, State> {
 						!this.state.address.length ||
 						!this.state.phone.length ||
 						!this.state.radius.length ||
-						!this.state.recipient.length
+						!this.state.recipient.length ||
+						this.state.invalidRadius
 					}
 					grayedOut={
 						!this.state.address.length ||
 						!this.state.phone.length ||
 						!this.state.radius.length ||
-						!this.state.recipient.length
+						!this.state.recipient.length ||
+						this.state.invalidRadius
 					}
 					onPress={this.handleSubmit}
 					danger={this.props.isMapOpen ? true : false}

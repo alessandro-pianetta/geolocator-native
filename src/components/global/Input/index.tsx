@@ -162,6 +162,64 @@ class Input extends PureComponent<Props> {
 			);
 		}
 
+		if (this.props.type === 'radius') {
+			return (
+				<View style={[styles.container, this.props.containerStyle]}>
+					<Text style={[styles.label, this.props.labelStyle]}>
+						{this.props.labelText}
+					</Text>
+					<View style={{ flexDirection: 'row' }}>
+						<TextInput
+							style={[
+								styles.input,
+								this.props.inputStyle,
+								{
+									width: '90%',
+									borderRightWidth: 0,
+								},
+								this.props.invalidRadius && {
+									borderColor: 'red',
+									borderWidth: 2,
+								},
+							]}
+							onChangeText={text => this.props.onChangeText(text)}
+							value={this.props.value}
+							placeholder={this.props.placeholder}
+							autoCorrect={this.props.autoCorrect}
+							autoCapitalize={this.props.autoCapitalize}
+							keyboardType={this.props.keyboardType}
+							multiline={this.props.multiline}
+							numberOfLines={this.props.numberOfLines}
+							secureTextEntry={this.props.secureTextEntry}
+						/>
+						<View
+							style={[
+								{
+									flex: 1,
+									borderColor: 'gray',
+									borderWidth: 1,
+									borderLeftWidth: 0,
+									justifyContent: 'center',
+								},
+								this.props.invalidRadius && {
+									borderColor: 'red',
+									borderWidth: 2,
+								},
+							]}
+						>
+							<Text
+								style={{
+									fontWeight: '700',
+								}}
+							>
+								{this.props.usesMetric ? 'km' : 'mi'}
+							</Text>
+						</View>
+					</View>
+				</View>
+			);
+		}
+
 		return (
 			<View style={[styles.container, this.props.containerStyle]}>
 				<Text style={[styles.label, this.props.labelStyle]}>
