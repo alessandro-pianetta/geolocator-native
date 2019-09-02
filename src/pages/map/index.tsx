@@ -9,6 +9,8 @@ import * as permissions from '../../utils/permissionUtils';
 
 // Redux
 import { getLocation } from '../../redux/Location/actions';
+import { getUser } from '../../redux/User/actions';
+
 // Styles
 import styles from './styles';
 
@@ -34,6 +36,7 @@ interface Props {
 	form: FormInfo;
 	getLocation(): void;
 	watchLocation(destination: Location, radius: string): void;
+	getUser(): void;
 }
 
 interface State {
@@ -65,6 +68,7 @@ class MapPage extends PureComponent<Props, State> {
 			await permissions.requestAndroidViewContactPermissions();
 			await permissions.requestAndroidWriteContactPermissions();
 		}
+		this.props.getUser();
 		this.props.getLocation();
 	}
 
@@ -177,5 +181,5 @@ const mapStateToProps = ({ location, form }) => ({
 
 export default connect(
 	mapStateToProps,
-	{ getLocation, watchLocation },
+	{ getLocation, watchLocation, getUser },
 )(MapPage);

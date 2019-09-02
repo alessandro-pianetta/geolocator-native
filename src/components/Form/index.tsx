@@ -113,7 +113,7 @@ class Form extends PureComponent<Props, State> {
 		this.props.animate(true);
 		this.props.setFormInfo(recipient, message, phone);
 		this.props.formatAddress(address);
-		this.props.convertRadius(radius);
+		this.props.convertRadius(radius, this.props.usesMetric);
 	}
 
 	handleSubmit = () => {
@@ -150,7 +150,7 @@ class Form extends PureComponent<Props, State> {
 			{
 				keyboardType: 'numeric',
 				labelText: `Distance in ${
-					false ? 'km' : 'miles'
+					this.props.usesMetric ? 'km' : 'miles'
 				} to send alert`,
 				onChangeText: (radius: string) => this.setState({ radius }),
 				placeholder: '2',
@@ -218,7 +218,11 @@ class Form extends PureComponent<Props, State> {
 	}
 }
 
+const mapStateToProps = ({ user }) => ({
+	usesMetric: user.usesMetric,
+});
+
 export default connect(
-	null,
+	mapStateToProps,
 	{ formatAddress, convertRadius, addCallToHistory, resetApp, setFormInfo },
 )(Form);

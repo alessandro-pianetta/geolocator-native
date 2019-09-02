@@ -2,31 +2,69 @@ import React, { PureComponent } from 'react';
 import { Switch, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import Form from '../../components/Form/Form';
+import { updateUser } from '../../redux/User/actions';
 import styles from './styles';
 
-interface Props {}
+interface User {
+	firstName: string;
+	lastName: string;
+	usesMetric: boolean;
+	defaultRadius: string;
+}
+interface Props {
+	user: User;
+}
 
 interface State {
 	unit: boolean;
 	givenName: string;
 	lastName: string;
-	message: string;
 	radius: string;
+	hasBeenUpdated: boolean;
 }
 
 class SettingsPage extends PureComponent<Props, State> {
-	componentWillMount() {}
 	state: State = {
 		givenName: '',
 		lastName: '',
-		message: '',
 		radius: '',
 		unit: false,
+		hasBeenUpdated: false,
 	};
+
+	componentWillMount() {
+		const didBlurSubscription = this.props.navigation.addListener(
+			'didBlur',
+			payload => {
+				if (this.state.hasBeenUpdated) {
+					this.props.updateUser(
+						this.state.givenName,
+						this.state.lastName,
+						this.state.radius,
+						this.state.unit,
+					);
+					this.setState({ hasBeenUpdated: false });
+				}
+			},
+		);
+
+		this.setState({
+			givenName: this.props.user.firstName,
+			lastName: this.props.user.lastName,
+			radius: this.props.user.defaultRadius,
+			unit: this.props.user.usesMetric,
+		});
+	}
+
+	componentDidUpdate() {
+		if (!this.state.hasBeenUpdated) {
+			this.setState({ hasBeenUpdated: true });
+		}
+	}
 
 	render() {
 		const {} = this.props;
-		const { givenName, lastName, radius, message } = this.state;
+		const { givenName, lastName, radius } = this.state;
 
 		const settingsForm = [
 			{
@@ -54,16 +92,6 @@ class SettingsPage extends PureComponent<Props, State> {
 				value: radius,
 			},
 			{
-				labelText: 'Default message',
-				multiline: true,
-				numberOfLines: 4,
-				onChangeText: (message: string) => {
-					this.setState({ message });
-				},
-				placeholder: 'Enter custom message here',
-				value: message,
-			},
-			{
 				labelText: `Use Metric`,
 				onValueChange: () => this.setState({ unit: !this.state.unit }),
 				type: 'switch',
@@ -79,9 +107,11 @@ class SettingsPage extends PureComponent<Props, State> {
 	}
 }
 
-const mapStateToProps = (state: any) => ({});
+const mapStateToProps = (state: any) => ({
+	user: state.user,
+});
 
 export default connect(
 	mapStateToProps,
-	null,
+	{ updateUser },
 )(SettingsPage);
