@@ -4,37 +4,15 @@ import { MAPS_API_KEY } from '../../consts/api';
 import styles from './styles';
 
 interface Props {
-	address: string;
 	editable: boolean;
 	onPress(event: any): void;
 }
 
-interface State {
-	hasData: boolean;
-}
-
-class GooglePlaces extends PureComponent<Props, State> {
-	places: any;
-	state = {
-		hasData: false,
-	};
-
-	componentWillReceiveProps = (nextProps: Props) => {
-		const hasData = !!nextProps.address;
-		if (hasData) {
-			this.places.setAddressText(nextProps.address);
-		}
-
-		this.setState({ hasData });
-	}
-
+class GooglePlaces extends PureComponent<Props> {
 	render() {
-		const { onPress, address, editable } = this.props;
-		const { hasData } = this.state;
-
+		const { onPress, editable } = this.props;
 		return (
 			<GooglePlacesAutocomplete
-				ref={(ref: any) => (this.places = ref)}
 				editable={editable}
 				placeholder='Search'
 				minLength={2}

@@ -177,7 +177,7 @@ class Form extends PureComponent<Props, State> {
 				invalidRadius: this.state.invalidRadius,
 			},
 			{
-				labelText: 'Custom message',
+				labelText: 'Additional message',
 				multiline: true,
 				numberOfLines: 4,
 				onChangeText: (message: string) => {
@@ -199,8 +199,7 @@ class Form extends PureComponent<Props, State> {
 			>
 				<GooglePlaces
 					editable={!this.props.isMapOpen}
-					address={address}
-					onPress={(address: string) => this.setState({ address })}
+					onPress={(adr: string) => this.setState({ address: adr })}
 				/>
 				<Border style={{ marginTop: 50 }} />
 				<Animated.View
@@ -234,6 +233,22 @@ class Form extends PureComponent<Props, State> {
 					success={this.props.isMapOpen ? false : true}
 					full={true}
 					text={!this.props.isMapOpen ? 'Submit' : 'Cancel'}
+				/>
+				<Button
+					primary={true}
+					onPress={() => {
+						this.setState({
+							address: '',
+							init: false,
+							message: '',
+							phone: '',
+							radius: '',
+							recipient: '',
+							sender: '',
+						});
+					}}
+					full={true}
+					text={'Clear'}
 				/>
 			</Animated.View>
 		);
