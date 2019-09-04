@@ -66,7 +66,7 @@ class Form extends PureComponent<Props, State> {
 	}
 
 	componentWillReceiveProps(nextProps: Props) {
-		if (!nextProps) {
+		if (nextProps.navigation.state.params) {
 			const {
 				givenName,
 				mobile,
