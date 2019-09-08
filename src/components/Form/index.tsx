@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react';
 import { Alert, Animated, Dimensions, View } from 'react-native';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { connect } from 'react-redux';
+import { MAPS_API_KEY } from '../../consts/api';
 
-import styles from './styles';
+import { GooglePlacesStyles, styles } from './styles';
 
 import { Button } from 'prefab-components';
 import FormArray from '../../components/Form/Form';
@@ -16,8 +18,6 @@ import {
 
 import BannerAdvert from '../global/Banner';
 import Border from '../global/Border';
-
-import GooglePlaces from '../GooglePlaces';
 
 interface Props {
 	isMapOpen: boolean;
@@ -197,11 +197,36 @@ class Form extends PureComponent<Props, State> {
 					},
 				]}
 			>
-				<GooglePlaces
+				<GooglePlacesAutocomplete
 					editable={!this.props.isMapOpen}
-					onPress={(adr: string) => this.setState({ address: adr })}
+					placeholder='Search'
+					minLength={2}
+					autoFocus={false}
+					returnKeyType={'search'}
+					listViewDisplayed='true'
+					renderDescription={(row: any) => row.description}
+					onPress={(data: any) =>
+						this.setState({ address: data.description })
+					}
+					getDefaultValue={() => ''}
+					query={{
+						key: MAPS_API_KEY,
+						language: 'en',
+					}}
+					text={address}
+					styles={GooglePlacesStyles}
+					nearbyPlacesAPI='GooglePlacesSearch'
+					GoogleReverseGeocodingQuery={{}}
+					GooglePlacesSearchQuery={{
+						rankby: 'distance',
+					}}
+					filterReverseGeocodingByTypes={[
+						'locality',
+						'administrative_area_level_3',
+					]}
 				/>
-				<Border style={{ marginTop: 50 }} />
+
+				{/* <Border style={{}} /> */}
 				<Animated.View
 					style={[
 						{
@@ -234,22 +259,24 @@ class Form extends PureComponent<Props, State> {
 					full={true}
 					text={!this.props.isMapOpen ? 'Submit' : 'Cancel'}
 				/>
-				<Button
-					primary={true}
-					onPress={() => {
-						this.setState({
-							address: '',
-							init: false,
-							message: '',
-							phone: '',
-							radius: '',
-							recipient: '',
-							sender: '',
-						});
-					}}
-					full={true}
-					text={'Clear'}
-				/>
+				{!this.props.isMapOpen ? (
+					<Button
+						primary={true}
+						onPress={() => {
+							this.setState({
+								address: '',
+								init: false,
+								message: '',
+								phone: '',
+								radius: '',
+								recipient: '',
+								sender: '',
+							});
+						}}
+						full={true}
+						text={'Clear'}
+					/>
+				) : null}
 			</Animated.View>
 		);
 	}
