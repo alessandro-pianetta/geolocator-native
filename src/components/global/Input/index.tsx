@@ -13,6 +13,7 @@ import styles from './styles';
 
 interface Props {
 	labelText: string;
+	index: number;
 	value: any;
 	object: any;
 	secureTextEntry?: boolean;
@@ -221,7 +222,13 @@ class Input extends PureComponent<Props> {
 		}
 
 		return (
-			<View style={[styles.container, this.props.containerStyle]}>
+			<View
+				style={[
+					styles.container,
+					!this.props.index && { marginTop: 20 },
+					this.props.containerStyle,
+				]}
+			>
 				<Text style={[styles.label, this.props.labelStyle]}>
 					{this.props.labelText}
 				</Text>

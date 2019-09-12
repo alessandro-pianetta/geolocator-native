@@ -2,11 +2,10 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: 'white',
-		// borderBottomColor: 'black',
-		// borderBottomWidth: 2,
-		borderStyle: 'solid',
+		backgroundColor: 'transparent',
 		flex: 1,
+		marginVertical: 88,
+		marginBottom: 83,
 	},
 	map: {
 		flex: 1,

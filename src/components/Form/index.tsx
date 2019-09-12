@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Alert, Animated, Dimensions, View } from 'react-native';
+import { Alert, Dimensions, SafeAreaView, View } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { connect } from 'react-redux';
 import { MAPS_API_KEY } from '../../consts/api';
@@ -94,37 +94,33 @@ class Form extends PureComponent<Props, State> {
 				message,
 			});
 		}
+
+		if (this.props.eta || nextProps.eta) {
+			console.log('onComplete', this.props, nextProps);
+			// 	this.props.onComplete(() => {
+			// 		this.resetForm();
+			// 	});
+		}
 	}
 
-	closeMap = () => {
-		Alert.alert('Do you really want to cancel?', '', [
-			{
-				text: 'OK',
-				onPress: () => this.props.resetApp(),
-			},
-			{
-				text: 'Cancel',
-				onPress: () => console.log('Cancel Pressed'),
-				style: 'cancel',
-			},
-		]);
-		this.props.setFormInfo('', '', '');
+	resetForm = () => {
+		this.setState({
+			address: '',
+			init: false,
+			message: '',
+			phone: '',
+			radius: '',
+			recipient: '',
+			sender: '',
+		});
 	}
 
 	openMap = () => {
 		const { recipient, phone, message, address, radius } = this.state;
-		this.props.animate(true);
 		this.props.setFormInfo(recipient, message, phone);
 		this.props.formatAddress(address);
 		this.props.convertRadius(radius, this.props.usesMetric);
-	}
-
-	handleSubmit = () => {
-		if (this.props.isMapOpen) {
-			this.closeMap();
-		} else {
-			this.openMap();
-		}
+		this.props.openMap();
 	}
 
 	render() {
@@ -189,14 +185,7 @@ class Form extends PureComponent<Props, State> {
 		];
 
 		return (
-			<Animated.View
-				style={[
-					styles.container,
-					{
-						paddingTop: this.props.margin,
-					},
-				]}
-			>
+			<View style={[styles.container]}>
 				<GooglePlacesAutocomplete
 					editable={!this.props.isMapOpen}
 					placeholder='Search'
@@ -226,63 +215,45 @@ class Form extends PureComponent<Props, State> {
 					]}
 				/>
 
-				{/* <Border style={{}} /> */}
-				<Animated.View
-					style={[
-						{
-							flex: this.props.formHeight,
-							opacity: this.props.formOpacity,
-						},
-					]}
-				>
-					{this.props.isMapOpen ? null : <FormArray form={mapForm} />}
-				</Animated.View>
+				<FormArray style={{ marginTop: 44 }} form={mapForm} />
 				{/* <BannerAdvert unitID='ca-app-pub-8155390171832078/6937225125' /> */}
-				<Button
-					disabled={
-						!this.state.address.length ||
-						!this.state.phone.length ||
-						!this.state.radius.length ||
-						!this.state.recipient.length ||
-						this.state.invalidRadius
-					}
-					grayedOut={
-						!this.state.address.length ||
-						!this.state.phone.length ||
-						!this.state.radius.length ||
-						!this.state.recipient.length ||
-						this.state.invalidRadius
-					}
-					onPress={this.handleSubmit}
-					danger={this.props.isMapOpen ? true : false}
-					success={this.props.isMapOpen ? false : true}
-					full={true}
-					text={!this.props.isMapOpen ? 'Submit' : 'Cancel'}
-				/>
-				{!this.props.isMapOpen ? (
+				<View>
+					<Button
+						disabled={
+							!this.state.address.length ||
+							!this.state.phone.length ||
+							!this.state.radius.length ||
+							!this.state.recipient.length ||
+							this.state.invalidRadius
+						}
+						grayedOut={
+							!this.state.address.length ||
+							!this.state.phone.length ||
+							!this.state.radius.length ||
+							!this.state.recipient.length ||
+							this.state.invalidRadius
+						}
+						onPress={this.openMap}
+						success={true}
+						full={true}
+						text='Submit'
+					/>
 					<Button
 						primary={true}
 						onPress={() => {
-							this.setState({
-								address: '',
-								init: false,
-								message: '',
-								phone: '',
-								radius: '',
-								recipient: '',
-								sender: '',
-							});
+							this.resetForm();
 						}}
 						full={true}
 						text={'Clear'}
 					/>
-				) : null}
-			</Animated.View>
+				</View>
+			</View>
 		);
 	}
 }
 
-const mapStateToProps = ({ user }) => ({
+const mapStateToProps = ({ location, user }) => ({
+	eta: location.eta,
 	usesMetric: user.usesMetric,
 });
 

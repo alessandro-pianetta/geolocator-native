@@ -1,8 +1,10 @@
+import { Button } from 'prefab-components';
 import { any } from 'prop-types';
 import React, { PureComponent } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import MapView, { Animated, AnimatedRegion } from 'react-native-maps';
+import { SafeAreaView, Text, View } from 'react-native';
+import MapView, { AnimatedRegion } from 'react-native-maps';
 import { normalizeName } from '../../utils/textUtils';
+
 import styles from './styles';
 
 interface Location {
@@ -102,14 +104,14 @@ class Map extends PureComponent<Props, State> {
 		const { initialLocation, currentLocation, destination } = this.props;
 		if (!initialLocation) {
 			return (
-				<View style={styles.container}>
+				<SafeAreaView style={styles.container}>
 					<Text>Loading...</Text>
-				</View>
+				</SafeAreaView>
 			);
 		}
 
 		return (
-			<View style={styles.container}>
+			<SafeAreaView style={styles.container}>
 				<MapView
 					ref={(map: any) => (this.map = map)}
 					style={styles.map}
@@ -122,7 +124,15 @@ class Map extends PureComponent<Props, State> {
 					{this.renderMarker(destination, 'destination')}
 					{this.renderTarget()}
 				</MapView>
-			</View>
+				<View style={{ backgroundColor: 'white' }}>
+					<Button
+						onPress={() => this.props.cancelMap()}
+						danger={true}
+						full={true}
+						text={'Cancel'}
+					/>
+				</View>
+			</SafeAreaView>
 		);
 	}
 }
