@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Animated, Platform, View } from 'react-native';
+import { Alert, Modal, Platform, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 // Components
 import Form from '../../components/Form';
@@ -8,7 +8,9 @@ import { watchLocation } from '../../utils/locationUtils';
 import * as permissions from '../../utils/permissionUtils';
 
 // Redux
-import { getLocation } from '../../redux/Location/actions';
+import { setFormInfo } from '../../redux/Form/actions';
+import { getLocation, resetApp } from '../../redux/Location/actions';
+
 import { getUser } from '../../redux/User/actions';
 
 // Styles
@@ -40,21 +42,11 @@ interface Props {
 }
 
 interface State {
-	mapHeight: any;
-	outerFormHeight: any;
-	innerFormHeight: any;
-	formMargin: any;
-	formOpacity: any;
 	isMapOpen: boolean;
 }
 
 class MapPage extends PureComponent<Props, State> {
 	state = {
-		mapHeight: new Animated.Value(0),
-		outerFormHeight: new Animated.Value(1),
-		innerFormHeight: new Animated.Value(1),
-		formMargin: new Animated.Value(36),
-		formOpacity: new Animated.Value(1),
 		isMapOpen: false,
 	};
 
@@ -71,42 +63,6 @@ class MapPage extends PureComponent<Props, State> {
 		this.props.getUser();
 		this.props.getLocation();
 	}
-
-	animate = (isMapOpen: boolean) => {
-		const {
-			mapHeight,
-			outerFormHeight,
-			innerFormHeight,
-			formOpacity,
-			formMargin,
-		} = this.state;
-
-		Animated.parallel([
-			Animated.timing(mapHeight, {
-				toValue: isMapOpen ? 6 : 0,
-				duration: 1000,
-			}),
-			Animated.timing(outerFormHeight, {
-				toValue: isMapOpen ? 1 : 5,
-				duration: 1000,
-			}),
-			Animated.timing(innerFormHeight, {
-				toValue: isMapOpen ? 0 : 100,
-				duration: 1000,
-			}),
-			Animated.timing(formOpacity, {
-				toValue: isMapOpen ? 0 : 1,
-				duration: 1000,
-			}),
-			Animated.timing(formMargin, {
-				toValue: isMapOpen ? 0 : 36,
-				duration: 1000,
-			}),
-		]).start();
-
-		this.setState({ isMapOpen });
-	}
-
 	componentDidUpdate(prevProps: Props) {
 		const {
 			destination,
@@ -115,9 +71,9 @@ class MapPage extends PureComponent<Props, State> {
 		} = this.props;
 
 		if (destination !== prevProps.destination) {
-			this.animate(destination ? true : false);
 			if (!destination) {
 				navigator.geolocation.clearWatch(this.id);
+				this.closeMap();
 			} else {
 				this.id = watchLocation(
 					firstName,
@@ -130,6 +86,38 @@ class MapPage extends PureComponent<Props, State> {
 		}
 	}
 
+	onComplete = (func = () => console.log('No Function')) => {
+		func();
+	}
+
+	openMap = () => {
+		this.setState({
+			isMapOpen: true,
+		});
+	}
+	closeMap = () => {
+		this.setState({
+			isMapOpen: false,
+		});
+	}
+
+	cancelMap = () => {
+		Alert.alert('Do you really want to cancel?', '', [
+			{
+				text: 'OK',
+				onPress: () => {
+					this.props.resetApp();
+					this.props.setFormInfo();
+				},
+			},
+			{
+				text: 'Cancel',
+				onPress: () => console.log('Cancel Pressed'),
+				style: 'cancel',
+			},
+		]);
+	}
+
 	render() {
 		const {
 			initialLocation,
@@ -139,34 +127,33 @@ class MapPage extends PureComponent<Props, State> {
 			navigation,
 		} = this.props;
 
-		const {
-			isMapOpen,
-			innerFormHeight,
-			formMargin,
-			mapHeight,
-			outerFormHeight,
-		} = this.state;
+		const { isMapOpen } = this.state;
 
 		return (
-			<View style={styles.container}>
-				<Animated.View style={{ flex: mapHeight }}>
+			<SafeAreaView style={styles.container}>
+				<Modal
+					animationType='slide'
+					transparent={true}
+					visible={this.state.isMapOpen}
+					onRequestClose={() => {
+						Alert.alert('Modal has been closed.');
+					}}
+				>
 					<Map
+						cancelMap={this.cancelMap}
 						initialLocation={initialLocation}
 						currentLocation={currentLocation}
 						destination={destination}
 						radius={radius}
 					/>
-				</Animated.View>
-				<Animated.View style={{ flex: outerFormHeight }}>
-					<Form
-						isMapOpen={isMapOpen}
-						animate={this.animate}
-						navigation={navigation}
-						formHeight={innerFormHeight}
-						margin={formMargin}
-					/>
-				</Animated.View>
-			</View>
+				</Modal>
+				<Form
+					onComplete={this.onComplete}
+					isMapOpen={isMapOpen}
+					openMap={this.openMap}
+					navigation={navigation}
+				/>
+			</SafeAreaView>
 		);
 	}
 }
@@ -181,5 +168,5 @@ const mapStateToProps = ({ location, form }) => ({
 
 export default connect(
 	mapStateToProps,
-	{ getLocation, watchLocation, getUser },
+	{ getLocation, watchLocation, getUser, resetApp, setFormInfo },
 )(MapPage);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dimensions, View } from 'react-native';
 
-import styles from './styles';
+import { styles } from './styles';
 
 import Input from '../global/Input';
 
@@ -19,16 +19,21 @@ interface Input {
 	numberOfLines?: number;
 }
 
-interface Form {
+interface Props {
+	style: any;
 	form: Input[];
 	validations: any;
 }
 
-const Form = ({ form }: Form) => {
+const Form = ({ style, form }: Props) => {
 	return (
-		<View style={styles.inputContainer}>
-			{form.map((input: Input) => (
-				<Input key={`input-${input.labelText}`} {...input} />
+		<View style={[styles.inputContainer, style]}>
+			{form.map((input: Input, index: number) => (
+				<Input
+					key={`input-${input.labelText}`}
+					index={index}
+					{...input}
+				/>
 			))}
 		</View>
 	);

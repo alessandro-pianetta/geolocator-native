@@ -264,16 +264,6 @@ class ContactPage extends PureComponent<Props, State> {
 				placeholder: '2',
 				value: radius,
 			},
-			{
-				labelText: 'Custom message',
-				multiline: true,
-				numberOfLines: 4,
-				onChangeText: (customMessage: string) => {
-					this.setState({ message: customMessage });
-				},
-				placeholder: 'Enter custom message here',
-				value: message,
-			},
 		];
 
 		if (this.props.loading) {
@@ -295,24 +285,26 @@ class ContactPage extends PureComponent<Props, State> {
 				{editing ? (
 					<Form form={mapForm} />
 				) : (
-					mapForm.slice(2, 6).map((item, index) => (
-						<View
-							style={styles.item}
-							key={`contactInfoItem${index}`}
-						>
-							<Text
-								style={[
-									{ fontWeight: 'bold' },
-									!item.value && {
-										color: '#00000080',
-									},
-								]}
+					<View>
+						{mapForm.slice(2, 6).map((item, index) => (
+							<View
+								style={styles.item}
+								key={`contactInfoItem${index}`}
 							>
-								{item.labelText}
-							</Text>
-							{this.renderInfo(item)}
-						</View>
-					))
+								<Text
+									style={[
+										{ fontWeight: 'bold' },
+										!item.value && {
+											color: '#00000080',
+										},
+									]}
+								>
+									{item.labelText}
+								</Text>
+								{this.renderInfo(item)}
+							</View>
+						))}
+					</View>
 				)}
 				<Button
 					onPress={this.handleSubmit}

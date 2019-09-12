@@ -100,7 +100,7 @@ class SettingsPage extends PureComponent<Props, State> {
 		];
 
 		return (
-			<View style={[styles.container, { paddingTop: 50 }]}>
+			<View style={[styles.container]}>
 				<Form noFlex={true} form={settingsForm} />
 			</View>
 		);

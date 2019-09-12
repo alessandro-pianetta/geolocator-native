@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react';
-import { Alert, Animated, Dimensions, View } from 'react-native';
+import { Alert, Dimensions, SafeAreaView, View } from 'react-native';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { connect } from 'react-redux';
+import { MAPS_API_KEY } from '../../consts/api';
 
-import styles from './styles';
+import { GooglePlacesStyles, styles } from './styles';
 
 import { Button } from 'prefab-components';
 import FormArray from '../../components/Form/Form';
@@ -16,8 +18,6 @@ import {
 
 import BannerAdvert from '../global/Banner';
 import Border from '../global/Border';
-
-import GooglePlaces from '../GooglePlaces';
 
 interface Props {
 	isMapOpen: boolean;
@@ -94,37 +94,33 @@ class Form extends PureComponent<Props, State> {
 				message,
 			});
 		}
+
+		if (this.props.eta || nextProps.eta) {
+			console.log('onComplete', this.props, nextProps);
+			// 	this.props.onComplete(() => {
+			// 		this.resetForm();
+			// 	});
+		}
 	}
 
-	closeMap = () => {
-		Alert.alert('Do you really want to cancel?', '', [
-			{
-				text: 'OK',
-				onPress: () => this.props.resetApp(),
-			},
-			{
-				text: 'Cancel',
-				onPress: () => console.log('Cancel Pressed'),
-				style: 'cancel',
-			},
-		]);
-		this.props.setFormInfo('', '', '');
+	resetForm = () => {
+		this.setState({
+			address: '',
+			init: false,
+			message: '',
+			phone: '',
+			radius: '',
+			recipient: '',
+			sender: '',
+		});
 	}
 
 	openMap = () => {
 		const { recipient, phone, message, address, radius } = this.state;
-		this.props.animate(true);
 		this.props.setFormInfo(recipient, message, phone);
 		this.props.formatAddress(address);
 		this.props.convertRadius(radius, this.props.usesMetric);
-	}
-
-	handleSubmit = () => {
-		if (this.props.isMapOpen) {
-			this.closeMap();
-		} else {
-			this.openMap();
-		}
+		this.props.openMap();
 	}
 
 	render() {
@@ -177,7 +173,7 @@ class Form extends PureComponent<Props, State> {
 				invalidRadius: this.state.invalidRadius,
 			},
 			{
-				labelText: 'Custom message',
+				labelText: 'Additional message',
 				multiline: true,
 				numberOfLines: 4,
 				onChangeText: (message: string) => {
@@ -189,58 +185,75 @@ class Form extends PureComponent<Props, State> {
 		];
 
 		return (
-			<Animated.View
-				style={[
-					styles.container,
-					{
-						paddingTop: this.props.margin,
-					},
-				]}
-			>
-				<GooglePlaces
+			<View style={[styles.container]}>
+				<GooglePlacesAutocomplete
 					editable={!this.props.isMapOpen}
-					address={address}
-					onPress={(address: string) => this.setState({ address })}
-				/>
-				<Border style={{ marginTop: 50 }} />
-				<Animated.View
-					style={[
-						{
-							flex: this.props.formHeight,
-							opacity: this.props.formOpacity,
-						},
+					placeholder='Search'
+					minLength={2}
+					autoFocus={false}
+					returnKeyType={'search'}
+					listViewDisplayed='true'
+					renderDescription={(row: any) => row.description}
+					onPress={(data: any) =>
+						this.setState({ address: data.description })
+					}
+					getDefaultValue={() => ''}
+					query={{
+						key: MAPS_API_KEY,
+						language: 'en',
+					}}
+					text={address}
+					styles={GooglePlacesStyles}
+					nearbyPlacesAPI='GooglePlacesSearch'
+					GoogleReverseGeocodingQuery={{}}
+					GooglePlacesSearchQuery={{
+						rankby: 'distance',
+					}}
+					filterReverseGeocodingByTypes={[
+						'locality',
+						'administrative_area_level_3',
 					]}
-				>
-					{this.props.isMapOpen ? null : <FormArray form={mapForm} />}
-				</Animated.View>
-				{/* <BannerAdvert unitID='ca-app-pub-8155390171832078/6937225125' /> */}
-				<Button
-					disabled={
-						!this.state.address.length ||
-						!this.state.phone.length ||
-						!this.state.radius.length ||
-						!this.state.recipient.length ||
-						this.state.invalidRadius
-					}
-					grayedOut={
-						!this.state.address.length ||
-						!this.state.phone.length ||
-						!this.state.radius.length ||
-						!this.state.recipient.length ||
-						this.state.invalidRadius
-					}
-					onPress={this.handleSubmit}
-					danger={this.props.isMapOpen ? true : false}
-					success={this.props.isMapOpen ? false : true}
-					full={true}
-					text={!this.props.isMapOpen ? 'Submit' : 'Cancel'}
 				/>
-			</Animated.View>
+
+				<FormArray style={{ marginTop: 44 }} form={mapForm} />
+				{/* <BannerAdvert unitID='ca-app-pub-8155390171832078/6937225125' /> */}
+				<View>
+					<Button
+						disabled={
+							!this.state.address.length ||
+							!this.state.phone.length ||
+							!this.state.radius.length ||
+							!this.state.recipient.length ||
+							this.state.invalidRadius
+						}
+						grayedOut={
+							!this.state.address.length ||
+							!this.state.phone.length ||
+							!this.state.radius.length ||
+							!this.state.recipient.length ||
+							this.state.invalidRadius
+						}
+						onPress={this.openMap}
+						success={true}
+						full={true}
+						text='Submit'
+					/>
+					<Button
+						primary={true}
+						onPress={() => {
+							this.resetForm();
+						}}
+						full={true}
+						text={'Clear'}
+					/>
+				</View>
+			</View>
 		);
 	}
 }
 
-const mapStateToProps = ({ user }) => ({
+const mapStateToProps = ({ location, user }) => ({
+	eta: location.eta,
 	usesMetric: user.usesMetric,
 });
 
