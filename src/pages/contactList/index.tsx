@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import RNContacts from 'react-native-contacts';
 import Contacts from 'react-native-contacts';
 import SectionListContacts from 'react-native-sectionlist-contacts';
@@ -66,13 +66,13 @@ class ContactsPage extends PureComponent<Props, State> {
 		];
 
 		return (
-			<View style={styles.container}>
+			<SafeAreaView style={styles.container}>
 				<View
 					style={{
 						flexDirection: 'row',
-						alignItems: 'center',
+						alignItems: 'flex-end',
 						marginRight: 15,
-						marginVertical: -20,
+						marginBottom: 20,
 					}}
 				>
 					<Form form={searchForm} />
@@ -93,7 +93,7 @@ class ContactsPage extends PureComponent<Props, State> {
 							});
 						}}
 					>
-						<Icon name='user-plus' size={30} />
+						<Icon name='user-plus' size={35} />
 					</TouchableOpacity>
 				</View>
 				<SectionListContacts
@@ -107,7 +107,7 @@ class ContactsPage extends PureComponent<Props, State> {
 					renderItem={this.renderItem}
 					otherAlphabet='#'
 				/>
-			</View>
+			</SafeAreaView>
 		);
 	}
 }

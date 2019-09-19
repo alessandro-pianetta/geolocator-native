@@ -32,6 +32,9 @@ const Form = ({ style, form }: Props) => {
 				<Input
 					key={`input-${input.labelText}`}
 					index={index}
+					containerStyle={[
+						index !== form.length - 1 && { marginBottom: 20 },
+					]}
 					{...input}
 				/>
 			))}

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Switch, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import Form from '../../components/Form/Form';
 import { updateUser } from '../../redux/User/actions';
@@ -100,9 +100,9 @@ class SettingsPage extends PureComponent<Props, State> {
 		];
 
 		return (
-			<View style={[styles.container]}>
+			<SafeAreaView style={[styles.container]}>
 				<Form noFlex={true} form={settingsForm} />
-			</View>
+			</SafeAreaView>
 		);
 	}
 }

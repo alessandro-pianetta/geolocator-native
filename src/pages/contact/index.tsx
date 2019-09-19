@@ -216,6 +216,7 @@ class ContactPage extends PureComponent<Props, State> {
 				},
 				placeholder: 'John',
 				value: givenName,
+				containerStyle: { marginVertical: 20 },
 			},
 			{
 				labelText: 'Last Name',

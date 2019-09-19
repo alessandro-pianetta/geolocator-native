@@ -215,7 +215,10 @@ class Form extends PureComponent<Props, State> {
 					]}
 				/>
 
-				<FormArray style={{ marginTop: 44 }} form={mapForm} />
+				<FormArray
+					style={{ marginTop: 44, paddingTop: 20 }}
+					form={mapForm}
+				/>
 				{/* <BannerAdvert unitID='ca-app-pub-8155390171832078/6937225125' /> */}
 				<View>
 					<Button
